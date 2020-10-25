@@ -13,3 +13,32 @@
  *= require_tree .
  *= require_self
  */
+ 
+.page {
+  background-color: #EEEFFF;
+}
+
+.title {
+    color: #363A76;
+}
+
+ .tweet {
+    border: 2px solid #dfcaca;
+    margin: 10px auto;
+    padding: 1em;
+    width: 97%;
+    height: auto;
+    background-color: white;
+}
+
+.likes {
+    float: left;
+    width: 95px;
+    text-align: center;
+}
+
+.separator {
+    border-left: 3px solid rgb(204, 204, 232);
+    margin-left: 115px;
+    padding-left: 1.1em;
+}
