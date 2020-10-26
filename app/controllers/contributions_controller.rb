@@ -1,10 +1,14 @@
 class ContributionsController < ApplicationController
-  before_action :set_contribution, only: [:show, :edit, :update, :destroy, :points]
+  before_action :set_contribution, only: [:show, :edit, :update, :destroy, :points,:link]
   # GET /contributions
   # GET /contributions.json
   def index
     @contributions = Contribution.all
   end
+  
+   def link
+ format.html { redirect_to "goog.com"}
+   end
   
   def indexNew
     @contributions = Contribution.all.order(created_at :desc)

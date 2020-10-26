@@ -1,24 +1,17 @@
 <p id="notice"><%= notice %></p>
 
 <body class="page">
-<h1 class="title"><%= link_to 'HackerNews', contributions_path %></h1>
-
-<td bgcolor="#ffffff">
-  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:2px">
-    <tbody>
-    <td style="line-height:12pt; height:10px;"><span class="pagetop">
-    <a a href="newest">New</a> | <%= link_to 'New Contribution', new_contribution_path %>  </span></td><td style="text-align:right;padding-right:4px;"><span class="pagetop">
-    </tbody>
-  </table>
+<FONT SIZE = 5 color="red"><%= link_to 'HackerNews', contributions_path %></font>
+<td>  <a a href="newest">New</a> | <%= link_to 'New Contribution', new_contribution_path %>
 </td>
+  
 
-  <tbody>
     <% @contributions.each do |contribution| %>
     <div class="tweet">
-        <h4><em><%= contribution.title %></em> <small style="color:grey">
-         <% if !contribution.url.empty? %>
-          ( <%= contribution.url %> )
-            <% end %>
+        <h4><em><%=link_to contribution.title, contribution %></em> <small style="color:grey">
+           <% if !contribution.url.empty? %>
+           (<%=link_to contribution.url, contribution, method: :link %>)
+         <% end %>
          
           
           </small> </h4>
@@ -26,16 +19,12 @@
             <td>Points <%= contribution.points %></td>
             <td><%= link_to 'Give Point', contribution, method: :put %></td>
             <td> by  <%= contribution.author %></td>
-            <td><%= contribution.text %></td>
-
              
-            <td><%= link_to 'Show', contribution %></td>
             <td><%= link_to 'Edit', edit_contribution_path(contribution) %></td>
             <td><%= link_to 'Destroy', contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </small>
     </div>
     <% end %>
-  </tbody>
 
 </body>
 

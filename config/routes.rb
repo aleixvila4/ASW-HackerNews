@@ -4,5 +4,6 @@
       put 'points'
     end
  end
+ 
   root 'contributions#index'
 end
