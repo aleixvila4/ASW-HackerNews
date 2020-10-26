@@ -15,17 +15,19 @@
   <tbody>
     <% @contributions.each do |contribution| %>
     <div class="tweet">
-        <h4><em><%= contribution.title %></em> <small style="color:grey">( <%= contribution.author %> ) </small> </h4>
+        <h4><em><%= contribution.title %></em> <small style="color:grey">
+         <% if !contribution.url.empty? %>
+          ( <%= contribution.url %> )
+            <% end %>
+         
+          
+          </small> </h4>
         <small>
             <td>Points <%= contribution.points %></td>
             <td><%= link_to 'Give Point', contribution, method: :put %></td>
-    
-           <% if contribution.url.empty? %>
-           
-              <td><%= contribution.text %></td>
-           <% else %>
-               <td><%= contribution.url %></td>
-            <%end%>
+            <td> by  <%= contribution.author %></td>
+            <td><%= contribution.text %></td>
+
              
             <td><%= link_to 'Show', contribution %></td>
             <td><%= link_to 'Edit', edit_contribution_path(contribution) %></td>
