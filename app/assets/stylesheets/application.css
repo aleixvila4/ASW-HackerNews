@@ -32,6 +32,7 @@
 }
 
 .likes {
+    margin: 30px auto;
     float: left;
     width: 95px;
     text-align: center;
