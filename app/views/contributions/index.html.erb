@@ -24,8 +24,13 @@
       
       <div class="separator">
         <h4><em><%= contribution.title %></em> by <%= contribution.author %> </h4>
-        <p><%= contribution.url %></p>
-        <p><%= contribution.text %></p>
+       <% if contribution.url.empty? %>
+       
+          <p><%= contribution.text %></p>
+       <% else %>
+           <p><%= contribution.url %></p>
+        <%end%>
+         
         <td><%= link_to 'Show', contribution %></td>
         <td><%= link_to 'Edit', edit_contribution_path(contribution) %></td>
         <td><%= link_to 'Destroy', contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>

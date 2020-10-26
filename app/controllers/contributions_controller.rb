@@ -1,6 +1,5 @@
 class ContributionsController < ApplicationController
   before_action :set_contribution, only: [:show, :edit, :update, :destroy, :points]
-
   # GET /contributions
   # GET /contributions.json
   def index
@@ -81,6 +80,6 @@ class ContributionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def contribution_params
-      params.require(:contribution).permit(:title, :author, :url, :text, :points)
+      params.require(:contribution).permit(:title, :author, :url, :text)
     end
 end
