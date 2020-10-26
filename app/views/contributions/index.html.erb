@@ -3,12 +3,11 @@
 <body class="page">
 <h1 class="title"><%= link_to 'HackerNews', contributions_path %></h1>
 
-<td bgcolor="#ff6600">
+<td bgcolor="#ffffff">
   <table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:2px">
     <tbody>
     <td style="line-height:12pt; height:10px;"><span class="pagetop">
     <a a href="newest">New</a> | <%= link_to 'New Contribution', new_contribution_path %>  </span></td><td style="text-align:right;padding-right:4px;"><span class="pagetop">
-    </tr>
     </tbody>
   </table>
 </td>
@@ -16,29 +15,25 @@
   <tbody>
     <% @contributions.each do |contribution| %>
     <div class="tweet">
-      <div class="likes">
-        <td>Points <%= contribution.points %></td>
-        <br>
-        <td><%= link_to 'Give Point', contribution, method: :put %></td>
-      </div>
-      
-      <div class="separator">
-        <h4><em><%= contribution.title %></em> by <%= contribution.author %> </h4>
-       <% if contribution.url.empty? %>
-       
-          <p><%= contribution.text %></p>
-       <% else %>
-           <p><%= contribution.url %></p>
-        <%end%>
-         
-        <td><%= link_to 'Show', contribution %></td>
-        <td><%= link_to 'Edit', edit_contribution_path(contribution) %></td>
-        <td><%= link_to 'Destroy', contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </div>
-      </tr>
+        <h4><em><%= contribution.title %></em> <small style="color:grey">( <%= contribution.author %> ) </small> </h4>
+        <small>
+            <td>Points <%= contribution.points %></td>
+            <td><%= link_to 'Give Point', contribution, method: :put %></td>
+    
+           <% if contribution.url.empty? %>
+           
+              <td><%= contribution.text %></td>
+           <% else %>
+               <td><%= contribution.url %></td>
+            <%end%>
+             
+            <td><%= link_to 'Show', contribution %></td>
+            <td><%= link_to 'Edit', edit_contribution_path(contribution) %></td>
+            <td><%= link_to 'Destroy', contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </small>
     </div>
     <% end %>
   </tbody>
-</table>
+
 </body>
 
