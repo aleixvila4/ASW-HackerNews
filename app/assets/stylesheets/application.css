@@ -36,6 +36,11 @@ b {
     font-weight: bold;
 }
 
+.url_post{
+    color: #828282 !important;
+    font-size: 8pt;
+}
+
 .subpage {
     background-color: #f6f6ef;
     padding: 0.5em;
