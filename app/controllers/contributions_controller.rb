@@ -7,11 +7,11 @@ class ContributionsController < ApplicationController
   end
   
    def link
- format.html { redirect_to "goog.com"}
+    format.html { redirect_to "google.com"}
    end
   
   def indexNew
-    @contributions = Contribution.all.order(created_at :desc)
+    @contributions = Contribution.all.order("created_at DESC")
   end
 
   # GET /contributions/1
@@ -27,12 +27,20 @@ class ContributionsController < ApplicationController
   # GET /contributions/1/edit
   def edit
   end
-
+  
+  def points 
+    @contribution.points += 1
+    @contribution.save
+    redirect_to contributions_url
+    
+  end
+  
   # POST /contributions
   # POST /contributions.json
   def create
     @contribution = Contribution.new(contribution_params)
-
+     if !defined?(@points) 
+       @points = 0 end
     respond_to do |format|
       if @contribution.save
         format.html { redirect_to @contribution, notice: 'Contribution was successfully created.' }
@@ -68,23 +76,19 @@ class ContributionsController < ApplicationController
     end
   end
   
-  def points 
-    @contribution.points += 1
-    @contribution.save
-    respond_to do |format|
-    format.html { redirect_to contributions_url}
-    end
-  end
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_contribution
       @contribution = Contribution.find(params[:id])
+      
     end
 
     # Only allow a list of trusted parameters through.
     def contribution_params
-      params.require(:contribution).permit(:title, :author, :url, :text, :points)
-
+      params.require(:contribution).permit(:title, :author, :url, :text)
+        
+        #@author = "autor"
     end
 end

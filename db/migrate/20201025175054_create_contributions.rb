@@ -5,7 +5,6 @@ class CreateContributions < ActiveRecord::Migration[6.0]
       t.string :author
       t.text :url
       t.string :text
-
       t.timestamps
     end
   end

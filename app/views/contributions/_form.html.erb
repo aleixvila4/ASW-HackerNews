@@ -10,28 +10,34 @@
       </ul>
     </div>
   <% end %>
-
+  
   <div class="field">
-    <%= form.label :title %>
+    title
     <%= form.text_field :title %>
   </div>
 
   <div class="field">
-    <%= form.label :author %>
+    author
     <%= form.text_field :author %>
   </div>
+  <!-- esto es un comentario -->
 
   <div class="field">
-    <%= form.label :url %>
-    <%= form.text_area :url %>
+    url
+    <%= form.text_field :url %>
   </div>
 
+ <th>or</th>
+ 
   <div class="field">
-    <%= form.label :text %>
-    <%= form.text_field :text %>
+    text
+    <%= form.text_area :text %>
   </div>
+
 
   <div class="actions">
     <%= form.submit %>
   </div>
+  
+  
 <% end %>

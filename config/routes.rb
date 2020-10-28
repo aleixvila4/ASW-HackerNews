@@ -4,6 +4,6 @@
       put 'points'
     end
  end
- 
+  get 'contributions_NewIndex', to: 'contributions#indexNew'
   root 'contributions#index'
 end

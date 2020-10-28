@@ -25,7 +25,7 @@
                 <td><%= contribution.points %> point </td>
             <% end %> 
             
-        <td><%= link_to 'Give Point', points_contribution_path(contribution), method: :put %></td>
+        <td><%= link_to 'Give Point', contribution, method: :put %></td>
         <td> by  <%= contribution.author %></td>
         <td> <%= time_ago_in_words(contribution.created_at) %></td>
         <td> | <%= link_to 'Edit', edit_contribution_path(contribution) %></td>
