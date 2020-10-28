@@ -3,16 +3,20 @@
 <body class="page">
 <FONT SIZE = 5><%= link_to 'HackerNews', contributions_path %></font>
 <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
-<td> | <%= link_to 'New Contribution', new_contribution_path %></td>
+<td> | <%= link_to 'Sutmit', new_contribution_path %></td>
   
 
 <% @contributions.each do |contribution| %>
 <div class="tweet">
-   <h4> <% if contribution.url.empty? %>
-        <FONT color="red"> * </font><%=link_to contribution.title, contribution %>
+   <h4> <%if contribution.points>0%>
+    <FONT color="red"> * </font> 
+    <%else%> <%= link_to '^', points_contribution_path(contribution), method: :put %>
+    <%end%>
+    <% if contribution.url.empty? %>
+        <%=link_to contribution.title, contribution %>
        
     <% else %>
-        <FONT color="red"> * </font> <%= contribution.title%>
+        <%= contribution.title%>
         <small style="color:grey"> (<%=contribution.url%>)</small>
     <% end %> 
    </h4>
