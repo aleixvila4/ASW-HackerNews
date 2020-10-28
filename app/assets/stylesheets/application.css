@@ -15,31 +15,30 @@
  */
  
 .page {
-  background-color: #EEEFFF;
+  background-color: #FFFFFF;
 }
 
-.title {
-    color: #363A76;
-}
-
- .tweet {
-    border: 2px solid #dfcaca;
-    margin: 10px auto;
+.Menus {
     padding: 1em;
-    width: 97%;
+    width: auto;
+    background-color: #ff6600;
+}
+
+.Menus a:link, a:visited {
+    background-color: #ff6600;
+    color: black;
+    text-align: center; 
+    text-decoration: none;
+    display: inline-block;
+}
+
+b {
+    font-weight: bold;
+}
+
+.subpage {
+    background-color: #f6f6ef;
+    padding: 0.5em;
+    width: auto;
     height: auto;
-    background-color: white;
-}
-
-.likes {
-    margin: 30px auto;
-    float: left;
-    width: 95px;
-    text-align: center;
-}
-
-.separator {
-    border-left: 3px solid rgb(204, 204, 232);
-    margin-left: 115px;
-    padding-left: 1.1em;
 }

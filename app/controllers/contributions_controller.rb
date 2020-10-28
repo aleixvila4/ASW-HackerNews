@@ -32,8 +32,7 @@ class ContributionsController < ApplicationController
   def points 
     @contribution.points += 1
     @contribution.save
-    redirect_to contributions_url
-    
+    redirect_to Rails.application.routes.recognize_path(request.referrer)
   end
   
   # POST /contributions
@@ -44,8 +43,8 @@ class ContributionsController < ApplicationController
        @points = 0 end
     respond_to do |format|
       if @contribution.save
-        format.html { redirect_to @contribution, notice: 'Contribution was successfully created.' }
-        format.json { render :show, status: :created, location: @contribution }
+        format.html { redirect_to contributions_url, notice: 'Contribution was successfully created.' }
+        #format.json { render :show, status: :created, location: @contribution }
       else
         format.html { render :new }
         format.json { render json: @contribution.errors, status: :unprocessable_entity }

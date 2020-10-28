@@ -1,18 +1,24 @@
-<p id="notice"><%= notice %></p>
-
+<div class= "Menus">
+    <b> <%= link_to 'HackerNews', contributions_path %></b>
+    <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
+    <td> | <%= link_to 'Submit', new_contribution_path %></td>
+</div>
+              
 <body class="page">
-<FONT SIZE = 5><%= link_to 'HackerNews', contributions_path %></font>
-<td> <%= link_to 'New', contributions_NewIndex_path %></td> 
-<td> | <%= link_to 'Sutmit', new_contribution_path %></td>
-  
-
+<%count = 1 %>
 <% @contributions.each do |contribution| %>
-<div class="tweet">
-   <h4> <% if contribution.url.empty? %>
-        <FONT color="red"> * </font><%=link_to contribution.title, contribution %>
+<div class="subpage">
+    <h4> 
+    <number style="color:grey"><%=count%>. </number>
+    <%if contribution.points>0%>
+    <FONT color="red"> * </font> 
+    <%else%> <%= link_to '^', points_contribution_path(contribution), method: :put %>
+    <%end%>
+    <% if contribution.url.empty? %>
+        <small style="color:black"> <%=link_to contribution.title, contribution %></small>
        
     <% else %>
-        <FONT color="red"> * </font> <%= contribution.title%>
+        <small style="color:black"><%= contribution.title%></small>
         <small style="color:grey"> (<%=contribution.url%>)</small>
     <% end %> 
    </h4>
@@ -25,13 +31,14 @@
                 <td><%= contribution.points %> point </td>
             <% end %> 
             
-        <td><%= link_to 'Give Point', contribution, method: :put %></td>
-        <td> by  <%= contribution.author %></td>
+        <td><%= link_to 'Give Point', points_contribution_path(contribution), method: :put %></td>
+        <td> by user1232443 </td>
         <td> <%= time_ago_in_words(contribution.created_at) %></td>
         <td> | <%= link_to 'Edit', edit_contribution_path(contribution) %></td>
         <td> | <%= link_to 'Delete', contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        </fon>
+        </font>
     </small>
+    <% count +=1%>
 </div>
 <% end %>
 
