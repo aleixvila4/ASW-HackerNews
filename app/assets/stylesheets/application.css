@@ -16,8 +16,12 @@
  
 .page {
   background-color: #FFFFFF;
-}
+      text-decoration: none;
 
+}
+.page a:link{
+text-decoration: none;
+}
 .Menus {
     padding: 1em;
     width: auto;
