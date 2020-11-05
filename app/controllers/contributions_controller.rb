@@ -6,6 +6,7 @@ class ContributionsController < ApplicationController
   def index
     @contributions = Contribution.all.order("points DESC")
   end
+
   
    def link
     format.html { redirect_to "google.com"}
@@ -18,6 +19,9 @@ class ContributionsController < ApplicationController
   # GET /contributions/1
   # GET /contributions/1.json
   def show
+  end
+  
+  def showUrlExistente 
   end
 
   # GET /contributions/new
@@ -35,21 +39,29 @@ class ContributionsController < ApplicationController
     redirect_to Rails.application.routes.recognize_path(request.referrer)
   end
   
+
   # POST /contributions
   # POST /contributions.json
   def create
+    
     @contribution = Contribution.new(contribution_params)
+    if Contribution.exists?(url: @contribution.url)
+        @contribution = Contribution.find_by(url: @contribution.url)
+         render :showUrlExistente
+    else
      if !defined?(@points) 
-       @points = 0 end
-    respond_to do |format|
-      if @contribution.save
-        format.html { redirect_to contributions_url, notice: 'Contribution was successfully created.' }
-        #format.json { render :show, status: :created, location: @contribution }
-      else
-        format.html { render :new }
-        format.json { render json: @contribution.errors, status: :unprocessable_entity }
+          @points = 0 end
+      respond_to do |format|
+        if @contribution.save
+          format.html { redirect_to contributions_url, notice: 'Contribution was successfully created.' }
+          #format.json { render :show, status: :created, location: @contribution }
+        else
+          format.html { render :new }
+          format.json { render json: @contribution.errors, status: :unprocessable_entity }
+        end
       end
     end
+    
   end
 
   # PATCH/PUT /contributions/1
