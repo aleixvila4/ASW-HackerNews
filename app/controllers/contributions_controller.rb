@@ -1,5 +1,5 @@
 class ContributionsController < ApplicationController
-  before_action :set_contribution, only: [:show, :edit, :update, :destroy, :points,:link]
+  before_action :set_contribution, only: [:show, :edit, :update, :destroy, :points]
   #:link -->no hace nada, lo puse para hacer una cosa de link pero no me ha salido
   # GET /contributions
   # GET /contributions.json
@@ -7,11 +7,6 @@ class ContributionsController < ApplicationController
     @contributions = Contribution.all.order("points DESC")
   end
 
-  
-   def link
-    format.html { redirect_to "google.com"}
-   end
-  
   def indexNew
     @contributions = Contribution.all.order("created_at DESC")
   end
@@ -47,14 +42,14 @@ class ContributionsController < ApplicationController
     @contribution = Contribution.new(contribution_params)
     if Contribution.exists?(url: @contribution.url)
         @contribution = Contribution.find_by(url: @contribution.url)
-         render :showUrlExistente
+        render :show, notice: 'url existent'
     else
      if !defined?(@points) 
           @points = 0 end
       respond_to do |format|
         if @contribution.save
-          format.html { redirect_to contributions_url, notice: 'Contribution was successfully created.' }
-          #format.json { render :show, status: :created, location: @contribution }
+          format.html { redirect_to contributions_url, notice: 'Contribution was successfully destroyed.' }
+
         else
           format.html { render :new }
           format.json { render json: @contribution.errors, status: :unprocessable_entity }
@@ -69,8 +64,8 @@ class ContributionsController < ApplicationController
   def update
     respond_to do |format|
       if @contribution.update(contribution_params)
-        format.html { redirect_to @contribution, notice: 'Contribution was successfully updated.' }
-        format.json { render :show, status: :ok, location: @contribution }
+        format.html { render :edit, notice: 'Contribution was successfully updated.' }
+        format.json { render :edit, status: :ok, location: @contribution }
       else
         format.html { render :edit }
         format.json { render json: @contribution.errors, status: :unprocessable_entity }
