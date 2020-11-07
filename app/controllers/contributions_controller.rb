@@ -10,6 +10,10 @@ class ContributionsController < ApplicationController
   def indexNew
     @contributions = Contribution.all.order("created_at DESC")
   end
+  
+  def indexComments
+    @contributions = Contribution.all.order("created_at DESC")
+  end
 
   # GET /contributions/1
   # GET /contributions/1.json
@@ -23,6 +27,7 @@ class ContributionsController < ApplicationController
   def new
     @contribution = Contribution.new
   end
+  
 
   # GET /contributions/1/edit
   def edit
@@ -40,7 +45,9 @@ class ContributionsController < ApplicationController
   def create
     
     @contribution = Contribution.new(contribution_params)
-    if Contribution.exists?(url: @contribution.url)
+    logger.debug "New url: #{@contribution.url.inspect}"
+    logger.debug  @contribution.url.empty?
+    if Contribution.exists?(url: @contribution.url) and not @contribution.url.empty?
         @contribution = Contribution.find_by(url: @contribution.url)
         render :show, notice: 'url existent'
     else

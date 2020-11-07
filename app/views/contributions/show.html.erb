@@ -1,26 +1,73 @@
 <p id="notice"><%= notice %></p>
+<div class= "Menus">
+    <b> <%= link_to 'HackerNews', contributions_path %></b>
+    <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
+    <td> | <%= link_to 'Comments', contributions_CommentsIndex_path %></td>
+    <td> | <%= link_to 'Submit', new_contribution_path %></td>
+</div>
+<body class="page">
+  <div class="subpage">
+    <div class="title">
+      <%if @contribution.points>0%>
+      <FONT color="red"> * </font> 
+      <%else%> <%= link_to '^', points_contribution_path(@contribution), method: :put %>
+      <%end%>
+      <% if @contribution.url.empty? %>
+          <small style="color:black"> <%= @contribution.title %> </small>
+         
+      <% else %>
+          <small style="color:black"><%= @contribution.title%></small>
+          <a class="url_post" href="<%= @contribution.url %>">(<%= @contribution.url %>)</a>
+      <% end %> 
+   </div>
+    <div class="info">
+      <small class="comment">
+          <font color="grey">
+             <% if @contribution.points>1 %>
+                      <td><%= @contribution.points %> points </td>
+              <% else %>
+                  <td><%= @contribution.points %> point </td>
+              <% end %> 
+              
+          <td><%= link_to 'Give Point', points_contribution_path(@contribution), method: :put %></td>
+          <td> by user1232443 </td>
+          <td> <%= time_ago_in_words(@contribution.created_at) %></td>
+          <td> | <%= link_to 'Edit', edit_contribution_path(@contribution) %></td>
+          <td> | <%= link_to 'Delete', @contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </font>
+      </small>
+     </div>
+     <br>
+<div class="area">
+<tr><td colspan="2"></td><td>
+          <form method="post" action="comment">
+          <textarea name="text" rows="6" cols="60" style="margin: 0px; width: 440px; height: 74px;"></textarea>
+                <br><br><input type="submit" value="Add comment"></form>
+      </td></tr>
+</div>
+<br>
+<br>
+<small>
+        <%if @contribution.points>0%>
+            <FONT color="red"> * </font> 
+        <%else%> 
+            <%= link_to '^', points_contribution_path(@contribution), method: :put %>
+        <%end%>
+        <font color="grey">
+            <td> by user1232443 </td>
+           <% if @contribution.points>1 %>
+                    <td><%= @contribution.points %> points </td>
+            <% else %>
+                <td><%= @contribution.points %> point </td>
+            <% end %> 
+            
+        <td><%= link_to 'Give Point', points_contribution_path(@contribution), method: :put %></td>
+        <td> <%= time_ago_in_words(@contribution.created_at) %></td>
+        </font>
+    </small>
+        <div class="comment">
+           <td> <%= @contribution.text %> </td>
+        </div>
+</div>
 
-<p>
-  <strong>Title:</strong>
-  <%= @contribution.title %>
-</p>
-
-<p>
-  <strong>Author:</strong>
-  <%= @contribution.author %>
-</p>
-
-<p>
-    <strong>Url:</strong>
-    <%= @contribution.url %>
-</p>
-
-
-<p>
-  <strong>Text:</strong>
-  <%= @contribution.text %>
-</p>
-
-<%= link_to 'Edit', edit_contribution_path(@contribution) %> |
-<%= link_to 'Delete', @contribution, method: :delete, data: { confirm: 'Are you sure?' } %> |
-<%= link_to 'Back', contributions_path %>
+</body>

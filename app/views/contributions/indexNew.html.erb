@@ -1,6 +1,7 @@
 <div class= "Menus">
     <b> <%= link_to 'HackerNews', contributions_path %></b>
-    <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
+    <td> <%= link_to 'New', contributions_NewIndex_path %></td>
+    <td> | <%= link_to 'Comments', contributions_CommentsIndex_path %></td>
     <td> | <%= link_to 'Submit', new_contribution_path %></td>
 </div>
               
@@ -36,6 +37,8 @@
         <td> <%= time_ago_in_words(contribution.created_at) %></td>
         <td> | <%= link_to 'Edit', edit_contribution_path(contribution) %></td>
         <td> | <%= link_to 'Delete', contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if not contribution.text.empty? %>
+            <td> | <%= link_to 'Comments', contribution %></td>
         </font>
     </small>
     <% count +=1%>

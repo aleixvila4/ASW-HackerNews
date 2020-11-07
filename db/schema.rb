@@ -22,9 +22,4 @@ ActiveRecord::Schema.define(version: 2020_10_25_175232) do
     t.integer "points", default: 0
   end
 
-  create_table "usuaris", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
 end
