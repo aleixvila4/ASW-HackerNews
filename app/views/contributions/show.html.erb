@@ -37,7 +37,9 @@
           </font>
       </small>
      </div>
-     <br>
+     <div class="comment">
+           <td> <%= @contribution.text %> </td>
+     </div>
 <div class="area">
 <tr><td colspan="2"></td><td>
           <form method="post" action="comment">
@@ -65,9 +67,6 @@
         <td> <%= time_ago_in_words(@contribution.created_at) %></td>
         </font>
     </small>
-        <div class="comment">
-           <td> <%= @contribution.text %> </td>
-        </div>
 </div>
 
 </body>

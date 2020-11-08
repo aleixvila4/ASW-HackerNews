@@ -16,13 +16,11 @@
     <FONT color="red"> * </font> 
     <%else%> <%= link_to '^', points_contribution_path(contribution), method: :put %>
     <%end%>
-    <% if contribution.url.empty? %>
-        <small style="color:black"> <%=link_to contribution.title, contribution %></small>
-    <% else %>
-        <small style="color:black"><%= contribution.title%></small>
+    <small style="color:black"> <%=link_to contribution.title, contribution %></small>
+    <% if not contribution.url.empty? %>
         <a class="url_post" href="<%=contribution.url %>">(<%= contribution.url %>)</a>
-    <% end %> 
-   </h4>
+    <% end %>   
+    </h4>
      
     <small >
         <font color="grey">

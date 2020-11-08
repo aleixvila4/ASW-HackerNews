@@ -2,4 +2,88 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
+.page {
+  background-color: #FFFFFF;
+      text-decoration: none;
+
+}
+.page a:link{
+    text-decoration: none;
+}
+.Menus {
+    padding: 1em;
+    width: auto;
+    background-color: #ff6600;
+}
+
+.Menus a:link, a:visited {
+    background-color: #ff6600;
+    color: black;
+    text-align: center; 
+    text-decoration: none;
+    display: inline-block;
+}
+
+b {
+    font-weight: bold;
+}
+
+.url_post{
+    color: #828282 !important;
+    font-size: 8pt;
+}
+
+.subpage {
+    background-color: #f6f6ef;
+    padding: 0.5em;
+    width: auto;
+    height: auto;
+}
+
+.comment {
+    left: 15px;
+    position: relative;
+    display: block;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+.title {
+    font-size: 15pt;
+    padding: 0.25em;
+}
+
+.info {
+    top: 0px;
+    position: relative;
+}
+
+.area {
+    border-collapse: separate;
+    white-space: normal;
+    line-height: normal;
+    font-weight: normal;
+    font-size: medium;
+    font-style: normal;
+    color: -internal-quirk-inherit; 
+    text-align: start;
+    border-spacing: 2px;
+    font-variant: normal;
+    left: 20px;
+    position: relative;
+
+}
+
+.text {
+    left: 15px;
+    color: #696F75;
+    position: relative;
+    display: block;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
 
