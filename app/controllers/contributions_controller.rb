@@ -12,6 +12,7 @@ class ContributionsController < ApplicationController
     @contributions = Contribution.all.order("created_at DESC")
   end
   
+  
   def indexAsk
     @contributions = Contribution.where(url: "").order("created_at DESC")
   end
@@ -33,22 +34,31 @@ class ContributionsController < ApplicationController
     @contribution = Contribution.new
   end
   
-
+  
   # GET /contributions/1/edit
   def edit
   end
   
   def points 
+    @vote = Vote.new
+    @vote.idContrib = @contribution.id
+    @vote.idUsuario = "user1232443"
+    @vote.save
+    
     @contribution.points += 1
     @contribution.save
     redirect_to Rails.application.routes.recognize_path(request.referrer)
   end
   
+  def destroyVote
+    @vote.destroy
+  end
+
 
   # POST /contributions
   # POST /contributions.json
   def create
-    
+   
     @contribution = Contribution.new(contribution_params)
     if Contribution.exists?(url: @contribution.url) and not @contribution.url.empty?
         @contribution = Contribution.find_by(url: @contribution.url)
@@ -56,6 +66,7 @@ class ContributionsController < ApplicationController
     else
      if !defined?(@points) 
           @points = 0 end
+          
       respond_to do |format|
         if @contribution.save
           format.html { redirect_to contributions_url, notice: 'Contribution was successfully destroyed.' }

@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  idContrib: MyString
+  idUsuario=string: MyString
+
+two:
+  idContrib: MyString
+  idUsuario=string: MyString
