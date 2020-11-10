@@ -2,8 +2,8 @@
 
 one:
   idContrib: MyString
-  idUsuario=string: MyString
+  idUsuari: MyString
 
 two:
   idContrib: MyString
-  idUsuario=string: MyString
+  idUsuari: MyString

@@ -40,20 +40,10 @@ class ContributionsController < ApplicationController
   end
   
   def points 
-    @vote = Vote.new
-    @vote.idContrib = @contribution.id
-    @vote.idUsuario = "user1232443"
-    @vote.save
-    
     @contribution.points += 1
     @contribution.save
     redirect_to Rails.application.routes.recognize_path(request.referrer)
   end
-  
-  def destroyVote
-    @vote.destroy
-  end
-
 
   # POST /contributions
   # POST /contributions.json
