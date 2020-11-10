@@ -38,12 +38,6 @@ class ContributionsController < ApplicationController
   # GET /contributions/1/edit
   def edit
   end
-  
-  def points 
-    @contribution.points += 1
-    @contribution.save
-    redirect_to Rails.application.routes.recognize_path(request.referrer)
-  end
 
   # POST /contributions
   # POST /contributions.json

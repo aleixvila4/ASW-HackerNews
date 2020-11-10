@@ -15,6 +15,9 @@ class VotesController < ApplicationController
   # GET /votes/new
   def new
     @vote = Vote.new(:idContrib => params[:id])
+    @contribution = Contribution.find(@vote.idContrib)
+    @contribution.points += 1
+    @contribution.save
     if @vote.save
       redirect_to contributions_url
     else

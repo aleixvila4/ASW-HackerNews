@@ -13,7 +13,7 @@
     <h4>
     <number style="color:grey"><%=count%>. </number>
     <%if not Vote.exists?(idContrib: contribution.id)%>
-        <%= link_to '^', new_vote_path(:iden => contribution.id)%>
+        <%= link_to '^', new_vote_path(:id => contribution.id)%>
     <%end%>
     
     <small style="color:black"> <%=link_to contribution.title, contribution %></small>
@@ -33,7 +33,7 @@
         <td> <%= time_ago_in_words(contribution.created_at) %></td>
         <%if  Vote.exists?(idContrib: contribution.id)%>
             <%=vote =  Vote.where(idContrib: contribution.id)%>
-            
+            <!--<td><Porcentaje= link_to 'unvote', vote, delete_vote_path %></td>-->
         <%end%>
         <td> | <%= link_to 'Edit', edit_contribution_path(contribution) %></td>
         <td> | <%= link_to 'Delete', contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
