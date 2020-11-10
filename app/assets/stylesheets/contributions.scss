@@ -2,6 +2,10 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
+// Place all the styles related to the contributions controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
 .page {
   background-color: #FFFFFF;
       text-decoration: none;
@@ -16,12 +20,17 @@
     background-color: #ff6600;
 }
 
-.Menus a:link, a:visited {
+.Menus a:link{
     background-color: #ff6600;
-    color: black;
+    color: black !important;
     text-align: center; 
     text-decoration: none;
     display: inline-block;
+}
+
+.Menus a:visited {
+    background-color: #ff6600 !important;
+    color: black;
 }
 
 b {
@@ -38,6 +47,10 @@ b {
     padding: 0.5em;
     width: auto;
     height: auto;
+}
+
+.subpage a:visited{
+    background-color: #f6f6ef !important;
 }
 
 .comment {
@@ -86,4 +99,3 @@ b {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
 }
-

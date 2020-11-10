@@ -11,7 +11,7 @@
 <% @contributions.each do |contribution| %>
 <div class="subpage">
     <h4>
-    <number styse="color:grey"><%=count%>. </number>
+    <number style="color:grey"><%=count%>. </number>
     <%if not Vote.exists?(idContrib: contribution.id)%>
         <%= link_to '^', new_vote_path(:iden => contribution.id)%>
     <%end%>
@@ -33,7 +33,7 @@
         <td> <%= time_ago_in_words(contribution.created_at) %></td>
         <%if  Vote.exists?(idContrib: contribution.id)%>
             <%=vote =  Vote.where(idContrib: contribution.id)%>
-            <td><%= link_to 'unvote', vote, delete_vote_path %></td>
+            
         <%end%>
         <td> | <%= link_to 'Edit', edit_contribution_path(contribution) %></td>
         <td> | <%= link_to 'Delete', contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
