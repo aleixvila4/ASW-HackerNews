@@ -19,7 +19,7 @@ class VotesController < ApplicationController
     @contribution.points += 1
     @contribution.save
     if @vote.save
-      redirect_to contributions_url
+     redirect_to request.referrer}    
     else
       format.html { render :new }
       format.json { render json: @vote.errors, status: :unprocessable_entity }

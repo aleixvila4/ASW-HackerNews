@@ -4,6 +4,8 @@
     <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
     <td> | <%= link_to 'Comments', contributions_CommentsIndex_path %></td>
     <td> | <%= link_to 'Submit', new_contribution_path %></td>
+    <td> | <%= link_to 'creaUseer', new_user_path %></td>
+
 </div>
 <body class="page">
   <div class="subpage">
@@ -37,18 +39,19 @@
           </font>
       </small>
      </div>
-     <div class="comment">
-           <td> <%= @contribution.text %> </td>
-     </div>
-<div class="area">
-<tr><td colspan="2"></td><td>
-          <form method="post" action="comment">
-          <textarea name="text" rows="6" cols="60" style="margin: 0px; width: 440px; height: 74px;"></textarea>
-                <br><br><input type="submit" value="Add comment"></form>
-      </td></tr>
-</div>
-<br>
-<br>
+     <%= @user = Users.where(username: 'wq') %>
+     
+     <form method="post" action="/comments">
+                <textarea name="comment[content]" rows="6" cols="60" required></textarea>
+                <input name="comment[Users]"  value="<%= @user.id %>"></input>
+                <input name="comment[Contributions]" value="<%= @contribution.id %>"></input>
+                <br><br>
+                <input type="submit" value="add comment">
+              </form>
+     
+   
+    <br>
+    <br>
 <small>
         <%if @contribution.points>0%>
             <FONT color="red"> * </font> 

@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_09_230938) do
+ActiveRecord::Schema.define(version: 2020_11_10_161515) do
+
+  create_table "comments", force: :cascade do |t|
+    t.text "commentText"
+    t.integer "Contributions_id", null: false
+    t.integer "Users_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["Contributions_id"], name: "index_comments_on_Contributions_id"
+    t.index ["Users_id"], name: "index_comments_on_Users_id"
+  end
 
   create_table "contributions", force: :cascade do |t|
     t.string "title"
@@ -22,6 +32,15 @@ ActiveRecord::Schema.define(version: 2020_11_09_230938) do
     t.integer "points", default: 0
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "username"
+    t.integer "Karma"
+    t.string "email"
+    t.text "about"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "votes", force: :cascade do |t|
     t.string "idContrib"
     t.string "idUsuari"
@@ -29,4 +48,6 @@ ActiveRecord::Schema.define(version: 2020_11_09_230938) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "comments", "Contributions", column: "Contributions_id"
+  add_foreign_key "comments", "Users", column: "Users_id"
 end
