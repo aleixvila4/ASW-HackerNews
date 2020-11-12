@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>Id</th>
       <th>Idcontrib</th>
       <th>Idusuari</th>
       <th colspan="3"></th>
@@ -14,6 +15,7 @@
   <tbody>
     <% @votes.each do |vote| %>
       <tr>
+        <td><%= vote.id %></td>
         <td><%= vote.idContrib %></td>
         <td><%= vote.idUsuari %></td>
         <td><%= link_to 'Show', vote %></td>

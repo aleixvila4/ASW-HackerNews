@@ -42,7 +42,6 @@ class ContributionsController < ApplicationController
   # POST /contributions
   # POST /contributions.json
   def create
-   
     @contribution = Contribution.new(contribution_params)
     if Contribution.exists?(url: @contribution.url) and not @contribution.url.empty?
         @contribution = Contribution.find_by(url: @contribution.url)
@@ -53,8 +52,11 @@ class ContributionsController < ApplicationController
           
       respond_to do |format|
         if @contribution.save
-          format.html { redirect_to contributions_url, notice: 'Contribution was successfully destroyed.' }
-
+          if not @contribution.url.empty?
+          format.html { redirect_to contributions_url}
+          else
+          format.html { redirect_to contributions_AskIndex_path}
+          end
         else
           format.html { render :new }
           format.json { render json: @contribution.errors, status: :unprocessable_entity }
@@ -84,7 +86,7 @@ class ContributionsController < ApplicationController
   def destroy
     @contribution.destroy
     respond_to do |format|
-      format.html { redirect_to contributions_url, notice: 'Contribution was successfully destroyed.' }
+      format.html { redirect_to request.referrer}
       format.json { head :no_content }
     end
   end
@@ -101,7 +103,5 @@ class ContributionsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def contribution_params
       params.require(:contribution).permit(:title, :author, :url, :text)
-        
-        #@author = "autor"
     end
 end

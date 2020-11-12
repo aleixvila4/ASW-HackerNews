@@ -39,19 +39,18 @@
           </font>
       </small>
      </div>
-     <%= @user = Users.where(username: 'wq') %>
+     <!--<= @user = Users.where("username = 'aleix'") %>-->
      
-     <form method="post" action="/comments">
-                <textarea name="comment[content]" rows="6" cols="60" required></textarea>
-                <input name="comment[Users]"  value="<%= @user.id %>"></input>
-                <input name="comment[Contributions]" value="<%= @contribution.id %>"></input>
-                <br><br>
-                <input type="submit" value="add comment">
-              </form>
-     
-   
+     <tr>
+        <form action="/comments" accept-charset="UTF-8" method="post">
+        <td><textarea rows="6" cols="60" name="comment[content]" id="tweet_content"></textarea></td>
+        <input type="hidden" name="comment[user_id]" value=<%= 2 %>>
+        <input type="hidden" name="comment[submission_id]" value=<%=@contribution.id %>>
+        <td><input type="submit" name="commit" value="add comment" ></td></tr>
+        </form>
     <br>
     <br>
+    
 <small>
         <%if @contribution.points>0%>
             <FONT color="red"> * </font> 
