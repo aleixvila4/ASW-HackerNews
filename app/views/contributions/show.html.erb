@@ -40,14 +40,17 @@
       </small>
      </div>
      <!--<= @user = Users.where("username = 'aleix'") %>-->
+     <tr> 
      
      <tr>
         <form action="/comments" accept-charset="UTF-8" method="post">
-        <td><textarea rows="6" cols="60" name="comment[content]" id="tweet_content"></textarea></td>
-        <input type="hidden" name="comment[user_id]" value=<%= 2 %>>
+        <td><textarea class = "area" rows="6" cols="60" name="comment[content]" id="tweet_content"></textarea></td>
+        <input type="hidden" name="comment[user_id]" value="2">
         <input type="hidden" name="comment[submission_id]" value=<%=@contribution.id %>>
-        <td><input type="submit" name="commit" value="add comment" ></td></tr>
+        <br>
+        <td><input class = "area" type="submit" name="commit" value="add comment" ></td></tr>
         </form>
+        </tr>
     <br>
     <br>
     
@@ -69,6 +72,8 @@
         <td> <%= time_ago_in_words(@contribution.created_at) %></td>
         </font>
     </small>
+    <br> 
+    <div class="text"> <%= @contribution.text %></div>
 </div>
 
 </body>
