@@ -15,5 +15,8 @@
   get 'delete_vote', to: 'votes#destroy'
   
   post 'new_user', to: 'users#new'
+  get '/auth/:provider/callback' => 'sessions#omniauth'
+  
+  get 'logout', to: 'sessions#logout'
   root 'contributions#index'
 end
