@@ -7,7 +7,7 @@
     <span style= "user">
         <% if current_user %>
         <td><%= link_to current_user.username, "/users/#{current_user.id}", id: "my_profile" %></td>
-                       
+        <td> | <%= link_to 'Log out', logout_url %></td>
         <% else %>
         <%= link_to "Log in", "/auth/google_oauth2", id: "sign_in" %>
         <% end %>

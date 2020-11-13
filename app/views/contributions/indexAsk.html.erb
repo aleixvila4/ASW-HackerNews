@@ -4,6 +4,14 @@
     <td> | <%= link_to 'Ask', contributions_AskIndex_path %></td>
     <td> | <%= link_to 'Comments', contributions_CommentsIndex_path %></td>
     <td> | <%= link_to 'Submit', new_contribution_path %></td>
+    <span style= "user">
+        <% if current_user %>
+        <td><%= link_to current_user.username, "/users/#{current_user.id}", id: "my_profile" %></td>
+        <td> | <%= link_to 'Log out', logout_url %></td>
+        <% else %>
+        <%= link_to "Log in", "/auth/google_oauth2", id: "sign_in" %>
+        <% end %>
+    </span>
 </div>
               
 <body class="page">
