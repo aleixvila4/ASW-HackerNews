@@ -1,26 +1,30 @@
 <div class= "Menus">
-  
-    <b> <%= link_to 'HackerNews', contributions_path %></b>
-    <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
-    <td> | <%= link_to 'Ask', contributions_AskIndex_path %></td>
-    <td> | <%= link_to 'Comments', contributions_CommentsIndex_path %></td>
-    <td> | 
-        <% if current_user %>
-        <%= link_to 'Submit', new_contribution_path %>
-        <% else %>
-        <%= link_to 'Submit', "/auth/google_oauth2" %>
-        <% end %>
-    </td>
+    <div class="table">
+       <div class="tr">
+           <div class="d1">
+                <b> <%= link_to 'HackerNews', contributions_path %></b>
+                <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
+                <td> | <%= link_to 'Ask', contributions_AskIndex_path %></td>
+                <td> | <%= link_to 'Comments', contributions_CommentsIndex_path %></td>
+                <td> | 
+                    <% if current_user %>
+                    <%= link_to 'Submit', new_contribution_path %>
+                    <% else %>
+                    <%= link_to 'Submit', "/auth/google_oauth2" %>
+                    <% end %>
+                </td>
+            </div>
 
-    <td style="text-align:right;padding-right:4px;">
-        <% if current_user %>
-        <td><%= link_to current_user.username, edit_user_path(current_user) %></td>
-        <td> | <%= link_to 'Log out', logout_url %></td>
-        <% else %>
-        <%= link_to "Log in", "/auth/google_oauth2" %>
-        <% end %>
-    </td>
-   
+            <div class="d3">
+                <% if current_user %>
+                <td><%= link_to current_user.username, edit_user_path(current_user) %></td>
+                <td> | <%= link_to 'Log out', logout_url %></td>
+                <% else %>
+                <%= link_to "Log in", "/auth/google_oauth2" %>
+                <% end %>
+            </div>
+        </div>
+    </div>
 </div>
               
 <body class="page">
@@ -29,8 +33,12 @@
 <div class="subpage">
     <h4>
     <number style="color:grey"><%=count%>. </number>
-    <%if not Vote.exists?(idContrib: contribution.id)%>
-        <%= link_to '^', vote_new_path(:id => contribution.id)%>
+    <%if not current_user %> 
+        <%= link_to '^', "/auth/google_oauth2" %>
+    <%else%>
+        <% if not Vote.exists?(idContrib: contribution.id, idUsuari: current_user.id)%>
+            <%= link_to '^', vote_new_path(:idContrib => contribution.id, :idUsuari => current_user.id)%>
+        <%end%>
     <%end%>
     
     <small style="color:black"> <%=link_to contribution.title, contribution %></small>
@@ -46,14 +54,15 @@
                 <td><%= contribution.points %> point </td>
             <% end %> 
             
-        <td> by user1232443 </td>
+         <td> by <%=link_to contribution.author, user_path(User.find_by(username: contribution.author)) %> </td>
         <td> <%= time_ago_in_words(contribution.created_at) %></td>
-        <%if  Vote.exists?(idContrib: contribution.id)%>
+        <%if current_user and Vote.exists?(idContrib: contribution.id, idUsuari: current_user.id)%>
             <td><a rel="nofollow" data-method="delete" href="/votes/<%= Vote.where(idContrib: contribution.id)[0].id %>">Unvote</a></td>
-            
         <%end%>
-        <td> | <%= link_to 'Edit', edit_contribution_path(contribution) %></td>
-        <td> | <%= link_to 'Delete', contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <%if current_user and contribution.author == current_user.username %>
+            <td> | <%= link_to 'Edit', edit_contribution_path(contribution) %></td>
+            <td> | <%= link_to 'Delete', contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <%end%>
         </font>
     </small>
     <% count +=1%>

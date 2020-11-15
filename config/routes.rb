@@ -17,6 +17,8 @@
   post 'new_user', to: 'users#new'
   get 'edit_user', to: 'users#edit_user'
   
+  get 'comment_new', to: 'comments#create'
+  
   get '/auth/:provider/callback' => 'sessions#omniauth'
   get 'logout', to: 'sessions#logout'
   root 'contributions#index'
