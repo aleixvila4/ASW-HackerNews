@@ -1,17 +1,26 @@
 <div class= "Menus">
+  
     <b> <%= link_to 'HackerNews', contributions_path %></b>
     <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
     <td> | <%= link_to 'Ask', contributions_AskIndex_path %></td>
     <td> | <%= link_to 'Comments', contributions_CommentsIndex_path %></td>
-    <td> | <%= link_to 'Submit', new_contribution_path %></td>
-    <span style= "user">
+    <td> | 
         <% if current_user %>
-        <td><%= link_to current_user.username, "/users/#{current_user.id}", id: "my_profile" %></td>
+        <%= link_to 'Submit', new_contribution_path %>
+        <% else %>
+        <%= link_to 'Submit', "/auth/google_oauth2" %>
+        <% end %>
+    </td>
+
+    <td style="text-align:right;padding-right:4px;">
+        <% if current_user %>
+        <td><%= link_to current_user.username, edit_user_path(current_user) %></td>
         <td> | <%= link_to 'Log out', logout_url %></td>
         <% else %>
-        <%= link_to "Log in", "/auth/google_oauth2", id: "sign_in" %>
+        <%= link_to "Log in", "/auth/google_oauth2" %>
         <% end %>
-    </span>
+    </td>
+   
 </div>
               
 <body class="page">
@@ -37,7 +46,7 @@
                 <td><%= contribution.points %> point </td>
             <% end %> 
             
-        <td> by user1232443 </td>
+        <td> by <%=link_to contribution.author, user_path(User.find_by(username: contribution.author)) %> </td>
         <td> <%= time_ago_in_words(contribution.created_at) %></td>
         <%if  Vote.exists?(idContrib: contribution.id)%>
         <td><a rel="nofollow" data-method="delete" href="/votes/<%= Vote.where(idContrib: contribution.id)[0].id %>">Unvote</a></td>

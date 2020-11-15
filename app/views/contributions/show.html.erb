@@ -1,10 +1,22 @@
 <p id="notice"><%= notice %></p>
 <div class= "Menus">
+  
     <b> <%= link_to 'HackerNews', contributions_path %></b>
     <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
+    <td> | <%= link_to 'Ask', contributions_AskIndex_path %></td>
     <td> | <%= link_to 'Comments', contributions_CommentsIndex_path %></td>
     <td> | <%= link_to 'Submit', new_contribution_path %></td>
-    <td> | <%= link_to 'creaUseer', new_user_path %></td>
+
+    <td style="text-align:right;padding-right:4px;">
+        <% if current_user %>
+        <td><%= link_to current_user.username, "/users/#{current_user.id}" %></td>
+        <td> | <%= link_to 'Log out', logout_url %></td>
+        <% else %>
+        <%= link_to "Log in", "/auth/google_oauth2", id: "sign_in" %>
+        <% end %>
+    </td>
+   
+</div>
 
 </div>
 <body class="page">

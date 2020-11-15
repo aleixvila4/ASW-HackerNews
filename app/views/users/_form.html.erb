@@ -12,18 +12,18 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :username %>
-    <%= form.text_field :username %>
+    <b><%= form.label :username %></b>
+    <%= current_user.username %>
   </div>
 
   <div class="field">
-    <%= form.label :Karma %>
-    <%= form.number_field :Karma %>
+    <b><%= form.label :Karma %></b>
+    <%= current_user.Karma %>
   </div>
 
   <div class="field">
-    <%= form.label :email %>
-    <%= form.text_field :email %>
+    <b><%= form.label :email %></b>
+    <%= current_user.email %>
   </div>
 
   <div class="field">
