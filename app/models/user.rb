@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   validates :username, :email, presence: true
   validates :username, :email, uniqueness: true
+  has_many :contributions, dependent: :destroy
+  has_many :comments, dependent: :destroy
   
     def self.from_omniauth(auth)
     #Creates a new user only if it doesn't exist

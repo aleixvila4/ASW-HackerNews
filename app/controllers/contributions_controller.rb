@@ -25,6 +25,7 @@ class ContributionsController < ApplicationController
   # GET /contributions/1.json
   def show
     @comment = Comment.new
+    @comments = Comment.where(Contributions_id: @contribution.id)
   end
   
   def showUrlExistente 

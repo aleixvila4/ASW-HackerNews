@@ -28,7 +28,7 @@
     <div class="title">
       <%if not current_user %> 
         <%= link_to '^', "/auth/google_oauth2" %>
-    <%else%>
+      <%else%>
         <% if not Vote.exists?(idContrib: @contribution.id, idUsuari: current_user.id)%>
             <%= link_to '^', vote_new_path(:idContrib => @contribution.id, :idUsuari => current_user.id)%>
         <%end%>
@@ -60,33 +60,35 @@
             <td> | <%= link_to 'Delete', @contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <%end%>
           </font>
+     <br> 
+     <%= render 'comments/form' %>
       </small>
      </div>
-     <tr> 
-    <%= render 'comments/form' %>
     <br>
     <br>
     
-<small>
-        <%if @contribution.points>0%>
-            <FONT color="red"> * </font> 
-        <%else%> 
-            <%= link_to '^', points_contribution_path(@contribution), method: :put %>
-        <%end%>
-        <font color="grey">
-            <td> by <%=link_to @contribution.author, user_path(User.find_by(username: @contribution.author)) %> </td>
-           <% if @contribution.points>1 %>
-                    <td><%= @contribution.points %> points </td>
-            <% else %>
-                <td><%= @contribution.points %> point </td>
-            <% end %> 
-            
-        <td><%= link_to 'Give Point', points_contribution_path(@contribution), method: :put %></td>
-        <td> <%= time_ago_in_words(@contribution.created_at) %></td>
-        </font>
-    </small>
+    <% @comments.each do |comment| %>
+        <div class="info">
+            <small class="comment">
+                <%if not current_user %> 
+                    <%= link_to '^', "/auth/google_oauth2" %>
+                <%else%>
+                  <!--Canviar la condicio del if que he fet copy paste de dalt-->
+                  <% if not Vote.exists?(idContrib: @contribution.id, idUsuari: current_user.id)%>
+                        <%= link_to '^', vote_new_path(:idContrib => @contribution.id, :idUsuari => current_user.id)%>
+                  <%end%>
+                <%end%>
+                <!--FALTA LINK AQUI-->
+                <%= link_to = User.find_by(id: comment.Users_id).username%>
+                <%= time_ago_in_words(comment.created_at) %> ago
+            </small>
+            <div class="comment">
+                <%= comment.commentText %>
+            </div>
+        </div>
+    <% end %>
+   
     <br> 
-    <div class="text"> <%= @contribution.text %></div>
 </div>
 
 </body>

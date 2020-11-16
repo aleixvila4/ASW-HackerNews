@@ -27,10 +27,9 @@ class CommentsController < ApplicationController
     @comment = Comment.new(comment_params)
     if (current_user)
       @comment.Users_id = current_user.id
-      logger.debug @comment
       respond_to do |format|
         if @comment.save
-          format.html { redirect_to comments_url }
+          format.html { redirect_to request.referrer }
           format.json { render :show, status: :created, location: @comment.contribution_id }
         else
           format.html { redirect_to comments_url }
@@ -74,6 +73,6 @@ class CommentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def comment_params
-      params.require(:comment).permit(:commentText, :Contributions_id, :Users_id)
+      params.require(:comment).permit(:commentText, :Contributions_id)
     end
 end

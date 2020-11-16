@@ -1,10 +1,10 @@
 <%= form_with(model: @comment, local: true) do |form| %>
 
   <div class="field">
-    <%= form.text_area :commentText %>
+    <%= form.text_area(:commentText, rows: 6, cols: 60) %>
   </div>
   
-  <%= hidden_field :Contributions_id, value: @contribution.id  %>
+  <%= form.hidden_field :Contributions_id, :value => @contribution.id %>
 
   <div class="actions">
     <%= form.submit %>
