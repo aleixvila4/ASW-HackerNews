@@ -24,7 +24,7 @@ class VotesController < ApplicationController
   # POST /votes
   # POST /votes.json
   def create
-    @vote = Vote.new(:idContrib => params[:id])
+    @vote = Vote.new(:idContrib => params[:idContrib], :idUsuari => params[:idUsuari])
     @contribution = Contribution.find(@vote.idContrib)
     @contribution.points += 1
     @contribution.save
