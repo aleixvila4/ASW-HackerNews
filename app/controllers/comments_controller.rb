@@ -24,14 +24,22 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    @comment = Comment.new(:commentText => params[:commentText], :Contributions_id => params[:Contributions_id], :Users_id => params[:Users_id])
-    logger.debug @comment
-      if @comment.save
-        redirect_to request.referrer 
-      else
-        format.html { render :new }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
+    @comment = Comment.new(comment_params)
+    if (current_user)
+      @comment.Users_id = current_user.id
+      logger.debug @comment
+      respond_to do |format|
+        if @comment.save
+          format.html { redirect_to comments_url }
+          format.json { render :show, status: :created, location: @comment.contribution_id }
+        else
+          format.html { redirect_to comments_url }
+          format.json { render json: @comment.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      redirect_to "/auth/google_oauth2"
+    end
   end
 
   # PATCH/PUT /comments/1

@@ -24,6 +24,7 @@ class ContributionsController < ApplicationController
   # GET /contributions/1
   # GET /contributions/1.json
   def show
+    @comment = Comment.new
   end
   
   def showUrlExistente 

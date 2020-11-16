@@ -6,7 +6,7 @@
                 <b> <%= link_to 'HackerNews', contributions_path %></b>
                 <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
                 <td> | <%= link_to 'Ask', contributions_AskIndex_path %></td>
-                <td> | <%= link_to 'Comments', contributions_CommentsIndex_path %></td>
+                <td> | <%= link_to 'Comments', comments_path %></td>
                 <td> | <%= link_to 'Submit', new_contribution_path %></td>
             </div>
 
@@ -62,19 +62,8 @@
           </font>
       </small>
      </div>
-     <!--<= @user = Users.where("username = 'aleix'") %>-->
      <tr> 
-     
-     <tr>
-        
-        <td><textarea class = "area" rows="6" cols="60" name="comment[content]" id="tweet_content"></textarea></td>
-        <!--<input type="hidden" name="comment[user_id]" value=<= current_user.id %>>
-        <input type="hidden" name="comment[contribution_id]" value=<= @contribution.id %>> -->
-        <br>
-        <!--<td><input class = "area" type="submit" name="commit" value="add comment" ></td></tr> -->
-        <%= link_to 'add comment', comment_new_path(:commentText => "Hola", :Contributions_id => @contribution.id, :Users_id => current_user.id)%>
-
-        </tr>
+    <%= render 'comments/form' %>
     <br>
     <br>
     
