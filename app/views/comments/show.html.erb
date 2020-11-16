@@ -1,19 +1,54 @@
 <p id="notice"><%= notice %></p>
+<div class= "Menus">
+    <div class="table">
+       <div class="tr">
+           <div class="d1">
+                <b> <%= link_to 'HackerNews', contributions_path %></b>
+                <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
+                <td> | <%= link_to 'Ask', contributions_AskIndex_path %></td>
+                <td> | <%= link_to 'Comments', contributions_CommentsIndex_path %></td>
+                <td> | 
+                    <% if current_user %>
+                    <%= link_to 'Submit', new_contribution_path %>
+                    <% else %>
+                    <%= link_to 'Submit', "/auth/google_oauth2" %>
+                    <% end %>
+                </td>
+            </div>
 
-<p>
-  <strong>Commenttext:</strong>
-  <%= @comment.commentText %>
-</p>
+            <div class="d3">
+                <% if current_user %>
+                <td><%= link_to current_user.username, edit_user_path(current_user) %></td>
+                <td> | <%= link_to 'Log out', logout_url %></td>
+                <% else %>
+                <%= link_to "Log in", "/auth/google_oauth2" %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
 
-<p>
-  <strong>Contributions:</strong>
-  <%= @comment.Contributions_id %>
-</p>
+</div>
+<body class="page">
+  <div class="subpage">
+    <small class="comment">
+      <%if not current_user %> 
+        <%= link_to '^', "/auth/google_oauth2" %>
+      <%else%>
+        <% if not CommentVote.exists?(idComment: @comment.id, idUsuari: current_user.id)%>
+            <%= link_to '^', comment_vote_new_path(:idComment => @comment.id, :idUsuari => current_user.id)%>
+        <%end%>
+      <%end%>
+      <%= link_to User.find_by(id: @comment.Users_id).username, user_path(User.find_by(id: @comment.Users_id)) %>
+      <%= link_to time_ago_in_words(@comment.created_at), @comment %> ago |
+      <%= link_to "parent", Contribution.find_by(id: @comment.Contributions_id) %> | on:
+      <%= link_to Contribution.find_by(id: @comment.Contributions_id).title , Contribution.find_by(id: @comment.Contributions_id) %>
+    </small>
+    <div class="comment">
+      <%= @comment.commentText %>
+    </div>
+    <br> 
+    
+</div>
 
-<p>
-  <strong>Users:</strong>
-  <%= @comment.Users_id %>
-</p>
-
-<%= link_to 'Edit', edit_comment_path(@comment) %> |
-<%= link_to 'Back', comments_path %>
+</body>

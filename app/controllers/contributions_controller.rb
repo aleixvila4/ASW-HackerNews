@@ -1,6 +1,5 @@
 class ContributionsController < ApplicationController
   before_action :set_contribution, only: [:show, :edit, :update, :destroy, :points]
-  #:link -->no hace nada, lo puse para hacer una cosa de link pero no me ha salido
   
   # GET /contributions
   # GET /contributions.json
@@ -15,6 +14,11 @@ class ContributionsController < ApplicationController
   
   def indexAsk
     @contributions = Contribution.where(url: "").order("created_at DESC")
+  end
+  
+  def indexUserContributions
+    #MIRAR AIXÔ
+    @contributions = Contribution.where(author: @user.username).order("created_at DESC")
   end
   
   def indexComments

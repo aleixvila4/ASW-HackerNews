@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Comment Votes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Idcomment</th>
+      <th>Idusuari</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @comment_votes.each do |comment_vote| %>
+      <tr>
+        <td><%= comment_vote.idComment %></td>
+        <td><%= comment_vote.idUsuari %></td>
+        <td><%= link_to 'Show', comment_vote %></td>
+        <td><%= link_to 'Edit', edit_comment_vote_path(comment_vote) %></td>
+        <td><%= link_to 'Destroy', comment_vote, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Comment Vote', new_comment_vote_path %>

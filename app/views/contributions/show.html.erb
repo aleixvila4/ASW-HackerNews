@@ -6,16 +6,22 @@
                 <b> <%= link_to 'HackerNews', contributions_path %></b>
                 <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
                 <td> | <%= link_to 'Ask', contributions_AskIndex_path %></td>
-                <td> | <%= link_to 'Comments', comments_path %></td>
-                <td> | <%= link_to 'Submit', new_contribution_path %></td>
+                <td> | <%= link_to 'Comments', contributions_CommentsIndex_path %></td>
+                <td> | 
+                    <% if current_user %>
+                    <%= link_to 'Submit', new_contribution_path %>
+                    <% else %>
+                    <%= link_to 'Submit', "/auth/google_oauth2" %>
+                    <% end %>
+                </td>
             </div>
 
             <div class="d3">
                 <% if current_user %>
-                <td><%= link_to current_user.username, "/users/#{current_user.id}" %></td>
+                <td><%= link_to current_user.username, edit_user_path(current_user) %></td>
                 <td> | <%= link_to 'Log out', logout_url %></td>
                 <% else %>
-                <%= link_to "Log in", "/auth/google_oauth2", id: "sign_in" %>
+                <%= link_to "Log in", "/auth/google_oauth2" %>
                 <% end %>
             </div>
         </div>
@@ -73,18 +79,22 @@
                 <%if not current_user %> 
                     <%= link_to '^', "/auth/google_oauth2" %>
                 <%else%>
-                  <!--Canviar la condicio del if que he fet copy paste de dalt-->
-                  <% if not Vote.exists?(idContrib: @contribution.id, idUsuari: current_user.id)%>
-                        <%= link_to '^', vote_new_path(:idContrib => @contribution.id, :idUsuari => current_user.id)%>
+                  <% if not CommentVote.exists?(idComment: comment.id, idUsuari: current_user.id)%>
+                        <%= link_to '^', comment_vote_new_path(:idComment => comment.id, :idUsuari => current_user.id)%>
                   <%end%>
                 <%end%>
-                <!--FALTA LINK AQUI-->
-                <%= link_to = User.find_by(id: comment.Users_id).username%>
-                <%= time_ago_in_words(comment.created_at) %> ago
+                <%= link_to User.find_by(id: comment.Users_id).username, user_path(User.find_by(id: comment.Users_id)) %>
+                <%= link_to time_ago_in_words(comment.created_at), comment %> ago
+                <% if current_user and CommentVote.exists?(idComment: comment.id, idUsuari: current_user.id)%>
+                    <td><a rel="nofollow" data-method="delete" href="/comment_votes/<%= CommentVote.where(idComment: comment.id, idUsuari: current_user.id)[0].id %>">Unvote</a></td>
+                <% end %>  
             </small>
             <div class="comment">
                 <%= comment.commentText %>
             </div>
+            <small class="comment">
+                <%= link_to "reply", comment %> 
+            </small>
         </div>
     <% end %>
    
