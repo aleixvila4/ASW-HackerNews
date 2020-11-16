@@ -18,7 +18,7 @@ class ContributionsController < ApplicationController
   
   def indexUserContributions
     #MIRAR AIXÔ
-    @contributions = Contribution.where(author: @user.username).order("created_at DESC")
+    @contributions = Contribution.where(author: user.username).order("created_at DESC")
   end
   
   def indexComments
@@ -91,9 +91,12 @@ class ContributionsController < ApplicationController
   # DELETE /contributions/1
   # DELETE /contributions/1.json
   def destroy
+    while not Comment.find_by(Contributions_id: @contribution.id).nil? do
+      Comment.find_by(Contributions_id: @contribution.id).destroy
+    end
     @contribution.destroy
     respond_to do |format|
-      format.html { redirect_to request.referrer}
+      format.html { redirect_to root_path}
       format.json { head :no_content }
     end
   end

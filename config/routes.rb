@@ -10,7 +10,6 @@
  end
   get 'contributions_NewIndex', to: 'contributions#indexNew'
   get 'contributions_AskIndex', to: 'contributions#indexAsk'
-  get 'contributions_UserIndex', to: 'contributions#indexUserContributions'
   get 'contributions_CommentsIndex', to: 'contributions#indexComments'
   
   get 'vote_new', to: 'votes#create'
@@ -18,6 +17,7 @@
   
   post 'new_user', to: 'users#new'
   get 'edit_user', to: 'users#edit_user'
+  get 'contributions_UserIndex', to: 'users#indexUserContributions'
   
   get 'comment_new', to: 'comments#create'
   
