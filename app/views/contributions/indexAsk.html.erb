@@ -42,19 +42,20 @@
     <%end%>
     
     <small style="color:black"> <%=link_to contribution.title, contribution %></small>
+    <a class="url_post" href="<%=contribution.url %>">(<%= contribution.url %>)</a>
     </h4>
      
     <small >
         <font color="grey">
            
-           <% if contribution.points>1 %>
+           <% if contribution.points > 1 %>
                     <td><%= contribution.points %> points </td>
             <% else %>
                 <td><%= contribution.points %> point </td>
             <% end %> 
-           
-        <!--MIRAR ESTO--> 
-        <td> by <%=link_to contribution.author, user_path(User.find_by(username: contribution.author)) %> </td>
+             
+        <td> by <a style="text-decoration:none;" href="/users/<%= User.find_by(username: contribution.author)&.id %>"> 
+        <td> <%= contribution.author %></td> </a> </td>
         <td> <%= time_ago_in_words(contribution.created_at) %> ago</td>
         <%if current_user and Vote.exists?(idContrib: contribution.id, idUsuari: current_user.id)%>
             <td><a rel="nofollow" data-method="delete" href="/votes/<%= Vote.where(idContrib: contribution.id, idUsuari: current_user.id)[0].id %>">Unvote</a></td>

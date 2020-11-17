@@ -16,6 +16,8 @@
   get 'delete_vote', to: 'votes#destroy'
   
   post 'new_user', to: 'users#new'
+  
+  get 'show_user', to: 'users#show'
   get 'edit_user', to: 'users#edit_user'
   get 'contributions_UserIndex', to: 'users#indexUserContributions'
   
