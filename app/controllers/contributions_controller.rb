@@ -92,6 +92,9 @@ class ContributionsController < ApplicationController
   # DELETE /contributions/1.json
   def destroy
     while not Comment.find_by(Contributions_id: @contribution.id).nil? do
+      while not Reply.find_by(Comments_id: Comment.find_by(Contributions_id: @contribution.id).id).nil? do
+      Reply.find_by(Comments_id: Comment.find_by(Contributions_id: @contribution.id).id).destroy
+      end
       Comment.find_by(Contributions_id: @contribution.id).destroy
     end
     @contribution.destroy
