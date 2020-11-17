@@ -29,7 +29,7 @@ class ContributionsController < ApplicationController
   # GET /contributions/1.json
   def show
     @comment = Comment.new
-    @comments = Comment.where(Contributions_id: @contribution.id).order("created_at DESC")
+    @comments = Comment.where(contributions_id: @contribution.id).order("created_at DESC")
   end
   
   def showUrlExistente 
@@ -91,11 +91,11 @@ class ContributionsController < ApplicationController
   # DELETE /contributions/1
   # DELETE /contributions/1.json
   def destroy
-    while not Comment.find_by(Contributions_id: @contribution.id).nil? do
-      while not Reply.find_by(Comments_id: Comment.find_by(Contributions_id: @contribution.id).id).nil? do
-      Reply.find_by(Comments_id: Comment.find_by(Contributions_id: @contribution.id).id).destroy
+    while not Comment.find_by(contributions_id: @contribution.id).nil? do
+      while not Reply.find_by(comments_id: Comment.find_by(contributions_id: @contribution.id).id).nil? do
+      Reply.find_by(comments_id: Comment.find_by(contributions_id: @contribution.id).id).destroy
       end
-      Comment.find_by(Contributions_id: @contribution.id).destroy
+      Comment.find_by(contributions_id: @contribution.id).destroy
     end
     @contribution.destroy
     respond_to do |format|

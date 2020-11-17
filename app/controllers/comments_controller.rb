@@ -11,7 +11,7 @@ class CommentsController < ApplicationController
   # GET /comments/1.json
   def show
     @reply = Reply.new
-    @replies = Reply.where(Comments_id: @comment.id).order("created_at DESC")
+    @replies = Reply.where(comments_id: @comment.id).order("created_at DESC")
   end
 
   # GET /comments/new
