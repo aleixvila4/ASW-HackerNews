@@ -105,7 +105,7 @@
         </div>
     
         <div class="reply">
-        <% @replies = Reply.where(Comments_id: comment.id).order("created_at DESC")%>
+        <% @replies = Reply.where(comments_id: comment.id).order("created_at DESC")%>
         <% @replies.each do |reply| %>
             <div class="info">
                 <small class="comment">
