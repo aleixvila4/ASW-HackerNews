@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem 'rails',      '6.0.3.4'
+gem 'rails',      '6.0.3.3'
 gem 'puma',       '4.3.5'
 gem 'sass-rails', '6.0.0'
 gem 'webpacker',  '4.2.2'
@@ -20,7 +20,7 @@ end
 group :development do
   gem 'web-console',           '4.0.2'
   gem 'listen',                '3.2.1'
-  gem 'spring',                '2.1.1'
+  gem 'spring',                '2.1.0'
   gem 'spring-watcher-listen', '2.0.1'
 end
 
@@ -36,5 +36,3 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 # Uncomment the following line if you're running Rails
-# on a native Windows system:
-# gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
