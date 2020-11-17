@@ -48,28 +48,35 @@
       <% end %> 
    </div>
     <div class="info">
-      <small class="comment">
-          <font color="grey">
-             <% if @contribution.points>1 %>
-                      <td><%= @contribution.points %> points </td>
-              <% else %>
-                  <td><%= @contribution.points %> point </td>
-              <% end %> 
+        <small class="comment">
+            <font color="grey">
+                <% if @contribution.points>1 %>
+                    <td><%= @contribution.points %> points </td>
+                <% else %>
+                    <td><%= @contribution.points %> point </td>
+                <% end %> 
               
-          <td> by <%=link_to @contribution.author, user_path(User.find_by(username: @contribution.author)) %> </td>
-          <td> <%= time_ago_in_words(@contribution.created_at) %></td>
-          <%if current_user and Vote.exists?(idContrib: @contribution.id, idUsuari: current_user.id)%>
-            <td><a rel="nofollow" data-method="delete" href="/votes/<%= Vote.where(idContrib: @contribution.id)[0].id %>">Unvote</a></td>
-        <%end%>
-        <%if current_user and @contribution.author == current_user.username %>
-            <td> | <%= link_to 'Edit', edit_contribution_path(@contribution) %></td>
-            <td> | <%= link_to 'Delete', @contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <%end%>
-          </font>
-     <br> 
-     <%= render 'comments/form' %>
-      </small>
-     </div>
+            <td> by <%=link_to @contribution.author, user_path(User.find_by(username: @contribution.author)) %> </td>
+            <td> <%= time_ago_in_words(@contribution.created_at) %> ago</td>
+            <%if current_user and Vote.exists?(idContrib: @contribution.id, idUsuari: current_user.id)%>
+                <td> | <a rel="nofollow" data-method="delete" href="/votes/<%= Vote.where(idContrib: @contribution.id)[0].id %>">Unvote</a></td>
+            <%end%>
+            <%if (@comments.size)==1%>
+                <td> | <%= link_to @comments.size, @contribution %> comment</td>
+            <%else%>
+                <td> | <%= link_to @comments.size, @contribution %> comments</td>
+            <%end%>
+            <%if current_user and @contribution.author == current_user.username %>
+                <td> | <%= link_to 'Edit', edit_contribution_path(@contribution) %></td>
+                <td> | <%= link_to 'Delete', @contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <%end%>
+            </font>
+            <br> 
+        </small>
+        <small class="comment">
+            <%= render 'comments/form' %>
+        </small>
+    </div>
     <br>
     <br>
     
@@ -95,6 +102,31 @@
             <small class="comment">
                 <%= link_to "reply", comment %> 
             </small>
+        </div>
+    
+        <div class="reply">
+        <% @replies = Reply.where(Comments_id: comment.id).order("created_at DESC")%>
+        <% @replies.each do |reply| %>
+            <div class="info">
+                <small class="comment">
+                    <%if not current_user %> 
+                        <%= link_to '^', "/auth/google_oauth2" %>
+                    <%else%>
+                      <% if not ReplyVote.exists?(idReply: reply.id, idUsuari: current_user.id)%>
+                            <%= link_to '^', reply_vote_new_path(:idReply => reply.id, :idUsuari => current_user.id)%>
+                      <%end%>
+                    <%end%>
+                    <%= link_to User.find_by(id: reply.Users_id).username, user_path(User.find_by(id: reply.Users_id)) %>
+                    <%= link_to time_ago_in_words(reply.created_at), reply %> ago
+                    <% if current_user and ReplyVote.exists?(idReply: reply.id, idUsuari: current_user.id)%>
+                        <td><a rel="nofollow" data-method="delete" href="/comment_votes/<%= ReplyVote.where(idReply: reply.id, idUsuari: current_user.id)[0].id %>">Unvote</a></td>
+                    <% end %>  
+                </small>
+                <div class="comment">
+                    <%= reply.replyText %>
+                </div>
+            </div>
+        <% end %>
         </div>
     <% end %>
    

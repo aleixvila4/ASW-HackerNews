@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Reply Votes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Idreply</th>
+      <th>Idusuari</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @reply_votes.each do |reply_vote| %>
+      <tr>
+        <td><%= reply_vote.idReply %></td>
+        <td><%= reply_vote.idUsuari %></td>
+        <td><%= link_to 'Show', reply_vote %></td>
+        <td><%= link_to 'Edit', edit_reply_vote_path(reply_vote) %></td>
+        <td><%= link_to 'Destroy', reply_vote, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Reply Vote', new_reply_vote_path %>

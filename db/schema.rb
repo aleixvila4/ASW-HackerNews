@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_16_211950) do
+ActiveRecord::Schema.define(version: 2020_11_17_160728) do
 
   create_table "comment_votes", force: :cascade do |t|
     t.string "idComment"
@@ -40,6 +40,24 @@ ActiveRecord::Schema.define(version: 2020_11_16_211950) do
     t.integer "points", default: 0
   end
 
+  create_table "replies", force: :cascade do |t|
+    t.text "replyText"
+    t.integer "Comments_id", null: false
+    t.integer "Users_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "points", default: 0
+    t.index ["Comments_id"], name: "index_replies_on_Comments_id"
+    t.index ["Users_id"], name: "index_replies_on_Users_id"
+  end
+
+  create_table "reply_votes", force: :cascade do |t|
+    t.string "idReply"
+    t.string "idUsuari"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.integer "Karma"
@@ -58,4 +76,6 @@ ActiveRecord::Schema.define(version: 2020_11_16_211950) do
 
   add_foreign_key "comments", "Contributions", column: "Contributions_id"
   add_foreign_key "comments", "Users", column: "Users_id"
+  add_foreign_key "replies", "Comments", column: "Comments_id"
+  add_foreign_key "replies", "Users", column: "Users_id"
 end

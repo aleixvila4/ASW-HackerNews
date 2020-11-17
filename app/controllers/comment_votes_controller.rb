@@ -26,7 +26,7 @@ class CommentVotesController < ApplicationController
   def create
     @comment_vote = CommentVote.new(:idComment => params[:idComment], :idUsuari => params[:idUsuari])
     @comment = Comment.find(@comment_vote.idComment)
-    @comment.points += 1
+    @comment.points
     @comment.save
     if @comment_vote.save
      redirect_to request.referrer   

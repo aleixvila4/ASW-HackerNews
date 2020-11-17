@@ -1,4 +1,6 @@
  Rails.application.routes.draw do
+  resources :reply_votes
+  resources :replies
   resources :comment_votes
   resources :comments
   resources :users
@@ -22,8 +24,9 @@
   get 'contributions_UserIndex', to: 'users#indexUserContributions'
   
   get 'comment_new', to: 'comments#create'
-  
   get 'comment_vote_new', to: 'comment_votes#create'
+  
+  get 'reply_vote_new', to: 'reply_votes#create'
   
   get '/auth/:provider/callback' => 'sessions#omniauth'
   get 'logout', to: 'sessions#logout'

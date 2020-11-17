@@ -48,17 +48,22 @@
     <small >
         <font color="grey">
            
-           <% if contribution.points>1 %>
-                    <td><%= contribution.points %> points </td>
+           <% if (contribution.points) == 1 %>
+                    <td><%= contribution.points %> point </td>
             <% else %>
-                <td><%= contribution.points %> point </td>
+                <td><%= contribution.points %> points </td>
             <% end %> 
             
         <td> by <a style="text-decoration:none;" href="/users/<%= User.find_by(username: contribution.author)&.id %>"> 
         <td> <%= contribution.author %></td> </a> </td>
         <td> <%= time_ago_in_words(contribution.created_at) %> ago</td>
         <%if current_user and Vote.exists?(idContrib: contribution.id, idUsuari: current_user.id)%>
-            <td><a rel="nofollow" data-method="delete" href="/votes/<%= Vote.where(idContrib: contribution.id, idUsuari: current_user.id)[0].id %>">Unvote</a></td>
+            <td> | <a rel="nofollow" data-method="delete" href="/votes/<%= Vote.where(idContrib: contribution.id, idUsuari: current_user.id)[0].id %>">Unvote</a></td>
+        <%end%>
+        <%if (Comment.where(Contributions_id: contribution.id).size)==1%>
+            <td> | <%= link_to Comment.where(Contributions_id: contribution.id).size, contribution %> comment</td>
+        <%else%>
+            <td> | <%= link_to Comment.where(Contributions_id: contribution.id).size, contribution %> comments</td>
         <%end%>
         <%if current_user and contribution.author == current_user.username %>
             <td> | <%= link_to 'Edit', edit_contribution_path(contribution) %></td>
