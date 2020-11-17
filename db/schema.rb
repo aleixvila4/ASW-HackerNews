@@ -21,13 +21,13 @@ ActiveRecord::Schema.define(version: 2020_11_17_160728) do
 
   create_table "comments", force: :cascade do |t|
     t.text "commentText"
-    t.integer "Contributions_id", null: false
-    t.integer "Users_id", null: false
+    t.integer "contributions_id", null: false
+    t.integer "users_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "points", default: 0
-    t.index ["Contributions_id"], name: "index_comments_on_Contributions_id"
-    t.index ["Users_id"], name: "index_comments_on_Users_id"
+    t.index ["contributions_id"], name: "index_comments_on_contributions_id"
+    t.index ["users_id"], name: "index_comments_on_users_id"
   end
 
   create_table "contributions", force: :cascade do |t|
@@ -42,13 +42,13 @@ ActiveRecord::Schema.define(version: 2020_11_17_160728) do
 
   create_table "replies", force: :cascade do |t|
     t.text "replyText"
-    t.integer "Comments_id", null: false
-    t.integer "Users_id", null: false
+    t.integer "comments_id", null: false
+    t.integer "users_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "points", default: 0
-    t.index ["Comments_id"], name: "index_replies_on_Comments_id"
-    t.index ["Users_id"], name: "index_replies_on_Users_id"
+    t.index ["comments_id"], name: "index_replies_on_comments_id"
+    t.index ["users_id"], name: "index_replies_on_users_id"
   end
 
   create_table "reply_votes", force: :cascade do |t|
@@ -74,8 +74,8 @@ ActiveRecord::Schema.define(version: 2020_11_17_160728) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "comments", "Contributions", column: "Contributions_id"
-  add_foreign_key "comments", "Users", column: "Users_id"
-  add_foreign_key "replies", "Comments", column: "Comments_id"
-  add_foreign_key "replies", "Users", column: "Users_id"
+  add_foreign_key "comments", "contributions", column: "contributions_id"
+  add_foreign_key "comments", "users", column: "users_id"
+  add_foreign_key "replies", "comments", column: "comments_id"
+  add_foreign_key "replies", "users", column: "users_id"
 end

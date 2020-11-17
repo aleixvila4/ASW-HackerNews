@@ -28,7 +28,7 @@ class CommentsController < ApplicationController
   def create
     @comment = Comment.new(comment_params)
     if (current_user)
-      @comment.Users_id = current_user.id
+      @comment.users_id = current_user.id
       respond_to do |format|
         if @comment.save
           format.html { redirect_to request.referrer }
@@ -60,8 +60,8 @@ class CommentsController < ApplicationController
   # DELETE /comments/1
   # DELETE /comments/1.json
   def destroy
-    while not Reply.find_by(Comments_id: @comment.id).nil? do
-      Reply.find_by(Comments_id: @comment.id).destroy
+    while not Reply.find_by(comments_id: @comment.id).nil? do
+      Reply.find_by(comments_id: @comment.id).destroy
     end
     @comment.destroy
     respond_to do |format|
@@ -78,6 +78,6 @@ class CommentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def comment_params
-      params.require(:comment).permit(:commentText, :Contributions_id)
+      params.require(:comment).permit(:commentText, :contributions_id)
     end
 end

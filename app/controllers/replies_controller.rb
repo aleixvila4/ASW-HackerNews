@@ -26,7 +26,7 @@ class RepliesController < ApplicationController
   def create
     @reply = Reply.new(reply_params)
     if (current_user)
-      @reply.Users_id = current_user.id
+      @reply.users_id = current_user.id
       respond_to do |format|
         if @reply.save
           format.html { redirect_to request.referrer }
@@ -73,6 +73,6 @@ class RepliesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def reply_params
-      params.require(:reply).permit(:replyText, :Comments_id, :Users_id)
+      params.require(:reply).permit(:replyText, :comments_id, :users_id)
     end
 end
