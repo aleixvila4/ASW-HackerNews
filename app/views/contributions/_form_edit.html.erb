@@ -15,11 +15,17 @@
     title
     <%= form.text_field :title %>
   </div>
-
+  
+  <% if !@contribution.url.empty?%>
   <div class="field">
-    url
-    <%= form.text_field :url %>
+    url:
+    <%= @contribution.url %>
   </div>
+  <% else %>
+  <div class="field">
+    url:
+  </div>
+  <% end %>
 
  <th>or</th>
  
