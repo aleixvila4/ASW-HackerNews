@@ -32,45 +32,46 @@
 </div>
               
 <body class="page">
-<%count = 1 %>
-<% @contributions.each do |contribution| %>
-<div class="subpage">
-    <h4>
-    <number style="color:grey"><%=count%>. </number>
-    <%if not current_user %> 
-        <%= link_to '^', "/auth/google_oauth2" %>
-    <%else%>
-        <% if not Vote.exists?(idContrib: contribution.id, idUsuari: current_user.id)%>
-            <%= link_to '^', vote_new_path(:idContrib => contribution.id, :idUsuari => current_user.id)%>
-        <%end%>
-    <%end%>
-    
-    <small style="color:black"> <%=link_to contribution.title, contribution %></small>
-    </h4>
-     
-    <small >
-        <font color="grey">
-           
-           <% if contribution.points>1 %>
-                    <td><%= contribution.points %> points </td>
-            <% else %>
-                <td><%= contribution.points %> point </td>
-            <% end %> 
-           
-        <!--MIRAR ESTO--> 
-        <td> by <%=link_to contribution.author, user_path(User.find_by(username: contribution.author)) %> </td>
-        <td> <%= time_ago_in_words(contribution.created_at) %> ago</td>
-        <%if current_user and Vote.exists?(idContrib: contribution.id, idUsuari: current_user.id)%>
-            <td><a rel="nofollow" data-method="delete" href="/votes/<%= Vote.where(idContrib: contribution.id, idUsuari: current_user.id)[0].id %>">Unvote</a></td>
-        <%end%>
-        <%if current_user and contribution.author == current_user.username %>
-            <td> | <%= link_to 'Edit', edit_contribution_path(contribution) %></td>
-            <td> | <%= link_to 'Delete', contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <%end%>
-        </font>
-    </small>
-    <% count +=1%>
-</div>
-<% end %>
-
+    <%count = 1 %>
+    <% @contributions.each do |contribution| %>
+        <% if Vote.exists?(idContrib: contribution.id, idUsuari: current_user.id) %>
+        <div class="subpage">
+            <h4>
+            <number style="color:grey"><%=count%>. </number>
+            <%if not current_user %> 
+                <%= link_to '^', "/auth/google_oauth2" %>
+            <%else%>
+                <% if not Vote.exists?(idContrib: contribution.id, idUsuari: current_user.id)%>
+                    <%= link_to '^', vote_new_path(:idContrib => contribution.id, :idUsuari => current_user.id)%>
+                <%end%>
+            <%end%>
+            
+            <small style="color:black"> <%=link_to contribution.title, contribution %></small>
+            </h4>
+             
+            <small >
+                <font color="grey">
+                   
+                   <% if contribution.points>1 %>
+                            <td><%= contribution.points %> points </td>
+                    <% else %>
+                        <td><%= contribution.points %> point </td>
+                    <% end %> 
+                   
+                <!--MIRAR ESTO--> 
+                <td> by <%=link_to contribution.author, user_path(User.find_by(username: contribution.author)) %> </td>
+                <td> <%= time_ago_in_words(contribution.created_at) %> ago</td>
+                <%if current_user and Vote.exists?(idContrib: contribution.id, idUsuari: current_user.id)%>
+                    <td><a rel="nofollow" data-method="delete" href="/votes/<%= Vote.where(idContrib: contribution.id, idUsuari: current_user.id)[0].id %>">Unvote</a></td>
+                <%end%>
+                <%if current_user and contribution.author == current_user.username %>
+                    <td> | <%= link_to 'Edit', edit_contribution_path(contribution) %></td>
+                    <td> | <%= link_to 'Delete', contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                <%end%>
+                </font>
+            </small>
+            <% count +=1%>
+        </div>
+        <% end %>
+    <% end %>
 </body>

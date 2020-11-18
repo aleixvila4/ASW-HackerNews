@@ -7,8 +7,7 @@ class CommentsController < ApplicationController
   end
   
   def index_voted_user_comments
-    @user = User.find(params[:user])
-    @comments = Comment.where(users_id: @user.id).order("created_at DESC")
+    @comments = Comment.all.order("created_at DESC")
   end
 
   # GET /comments/1

@@ -22,10 +22,7 @@ class ContributionsController < ApplicationController
   end
   
   def index_voted_user_contributions
-    @votes = Vote.where(idUsuari: current_user.id)
-    puts "ESTIC AQUI--------------------"
-    logger.debug @votes
-    @contributions = Contribution.where(id: @votes.idContrib).order("created_at DESC")
+    @contributions = Contribution.all.order("created_at DESC")
   end
 
   # GET /contributions/1

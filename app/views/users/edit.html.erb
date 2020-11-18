@@ -38,8 +38,8 @@
   </p>
   <div> <%= link_to 'submissions', user_contributions_Index_path(:user => @user) %> </div>
   <div> <%= link_to 'comments', user_comments_Index_path(:user => @user) %> </div>
-  <!--<div> <= link_to 'submissions', user_voted_contributions_Index_path(:user => current_user) %> </div>
-  <div> <= link_to 'comments', user_voted_comments_Index_path(:user => current_user) %> </div>-->
+  <div> <%= link_to 'submissions', user_voted_contributions_Index_path(:user => current_user) %> </div>
+  <div> <%= link_to 'comments', user_voted_comments_Index_path(:user => current_user) %> </div>
   </div>
 </body>
 

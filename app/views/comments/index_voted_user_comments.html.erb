@@ -9,6 +9,7 @@
                 <% if current_user %>
                 <td> | <%= link_to 'Threads', user_comments_Index_path(:user => current_user) %></td>
                 <% end %>
+                <td> | <%= link_to 'Votes', votes_path %></td>
                 <td> | 
                     <% if current_user %>
                     <%= link_to 'Submit', new_contribution_path %>
@@ -32,6 +33,7 @@
 
 <body class="page">
     <% @comments.each do |comment| %>
+    <% if CommentVote.exists?(idComment: comment.id, idUsuari: current_user.id) %>
     <div class="subpage">
       <div class="info">
             <small class="comment">
@@ -62,6 +64,7 @@
             </small>
         </div>
         </div>
+        <% end %>
     <% end %>
 </body>
 <br>
