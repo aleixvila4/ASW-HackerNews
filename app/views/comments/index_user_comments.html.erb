@@ -9,7 +9,6 @@
                 <% if current_user %>
                 <td> | <%= link_to 'Threads', user_comments_Index_path(:user => current_user) %></td>
                 <% end %>
-                <td> | <%= link_to 'Votes', votes_path %></td>
                 <td> | 
                     <% if current_user %>
                     <%= link_to 'Submit', new_contribution_path %>

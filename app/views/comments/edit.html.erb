@@ -1,6 +1,51 @@
-<h1>Editing Comment</h1>
+<p id="notice"><%= notice %></p>
+<div class= "Menus">
+    <div class="table">
+       <div class="tr">
+           <div class="d1">
+                <b> <%= link_to 'HackerNews', contributions_path %></b>
+                <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
+                <td> | <%= link_to 'Ask', contributions_AskIndex_path %></td>
+                <% if current_user %>
+                <td> | <%= link_to 'Threads', user_comments_Index_path(:user => current_user) %></td>
+                <% end %>
+                <td> | 
+                    <% if current_user %>
+                    <%= link_to 'Submit', new_contribution_path %>
+                    <% else %>
+                    <%= link_to 'Submit', "/auth/google_oauth2" %>
+                    <% end %>
+                </td>
+            </div>
 
-<%= render 'form', comment: @comment %>
+            <div class="d3">
+                <% if current_user %>
+                <td><%= link_to current_user.username, edit_user_path(current_user) %></td>
+                <td> | <%= link_to 'Log out', logout_url %></td>
+                <% else %>
+                <%= link_to "Log in", "/auth/google_oauth2" %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
 
-<%= link_to 'Show', @comment %> |
-<%= link_to 'Back', comments_path %>
+<body class="page">
+  <div class="subpage">
+    <small class="comment">
+      <% if (@comment.points) == 1 %>
+         <td><%= @comment.points %> point </td>
+      <% else %>
+         <td><%= @comment.points %> points </td>
+      <% end %> 
+      by <%= link_to User.find_by(id: @comment.users_id).username, user_path(User.find_by(id: @comment.users_id)) %>
+      <%= link_to time_ago_in_words(@comment.created_at), @comment %> ago |
+      <%= link_to "parent", Contribution.find_by(id: @comment.contributions_id) %> | on:
+      <%= link_to Contribution.find_by(id: @comment.contributions_id).title , Contribution.find_by(id: @comment.contributions_id) %>
+    </small>
+  </div>
+</body>
+
+<div class = "subpage">
+<%= render 'formedit', comment: @comment %>
+</div>
