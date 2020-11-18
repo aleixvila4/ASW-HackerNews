@@ -33,6 +33,7 @@
   
   get '/auth/:provider/callback' => 'sessions#omniauth'
   get 'logout', to: 'sessions#logout'
+  get 'form_edit', to: 'contributions#edit'
   
   root 'contributions#index'
 end

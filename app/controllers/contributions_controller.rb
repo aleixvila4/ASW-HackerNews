@@ -43,6 +43,7 @@ class ContributionsController < ApplicationController
   
   # GET /contributions/1/edit
   def edit
+   
   end
 
   # POST /contributions

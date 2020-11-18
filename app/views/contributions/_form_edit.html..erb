@@ -1,0 +1,37 @@
+<%= form_with(model: contribution, local: true) do |form| %>
+  <% if contribution.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(contribution.errors.count, "error") %> prohibited this contribution from being saved:</h2>
+
+      <ul>
+        <% contribution.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="field">
+    title
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="field">
+    url
+    <%= form.text_field :url %>
+  </div>
+
+ <th>or</th>
+ 
+  <div class="field">
+    text
+    <%= form.text_area :text %>
+  </div>
+
+
+  <div class="actions">
+    <%= form.submit "Submit" %>
+  </div>
+  
+  
+<% end %>
