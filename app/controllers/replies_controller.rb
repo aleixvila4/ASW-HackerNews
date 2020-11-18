@@ -29,6 +29,10 @@ class RepliesController < ApplicationController
       @reply.users_id = current_user.id
       respond_to do |format|
         if @reply.save
+          @vote = ReplyVote.new(:idUsuari => current_user.id, :idReply => @reply.id)
+          @vote.save
+          @reply.points += 1
+          @reply.save
           format.html { redirect_to request.referrer }
           format.json { render :show, status: :created, location: @reply }
         else

@@ -35,6 +35,10 @@ class CommentsController < ApplicationController
       @comment.users_id = current_user.id
       respond_to do |format|
         if @comment.save
+          @vote = CommentVote.new(:idUsuari => current_user.id, :idComment => @comment.id)
+          @vote.save
+          @comment.points += 1
+          @comment.save
           format.html { redirect_to request.referrer }
           format.json { render :show, status: :created, location: @comment.contribution_id }
         else

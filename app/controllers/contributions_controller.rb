@@ -53,10 +53,6 @@ class ContributionsController < ApplicationController
   def create
     @contribution = Contribution.new(contribution_params)
     @contribution.author = current_user.username
-    @vote = Vote.new(:idUsuari => current_user.id, :idContrib => @contribution.id)
-    @vote.idContrib = @contribution.id
-    @vote.save
-    @contribution.points += 1
     if Contribution.exists?(url: @contribution.url) and not @contribution.url.empty?
         @contribution = Contribution.find_by(url: @contribution.url)
         redirect_to @contribution, notice: 'The URL you wanted to add already exists.'
@@ -66,6 +62,10 @@ class ContributionsController < ApplicationController
      end
       respond_to do |format|
         if @contribution.save
+          @vote = Vote.new(:idUsuari => current_user.id, :idContrib => @contribution.id)
+          @vote.save
+          @contribution.points += 1
+          @contribution.save
           if not @contribution.url.empty?
           format.html { redirect_to contributions_url}
           else
