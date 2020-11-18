@@ -133,3 +133,19 @@ b {
        text-align:right;
        width:25%;
 }
+
+a:link{
+    background-color: #f6f6ef;
+    color: grey;
+    text-align: center; 
+    text-decoration: none;
+    display: inline-block;
+}
+a:hover{
+     background-color: #f6f6ef !important;
+     color: grey;
+}
+.subpage a:hover{
+    background-color: #f6f6ef !important;
+     color: grey;
+}

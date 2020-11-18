@@ -9,7 +9,6 @@
                 <% if current_user %>
                 <td> | <%= link_to 'Threads', user_comments_Index_path(:user => current_user) %></td>
                 <% end %>
-                <td> | <%= link_to 'Votes', votes_path %></td>
                 <td> | 
                     <% if current_user %>
                     <%= link_to 'Submit', new_contribution_path %>
@@ -46,7 +45,9 @@
     <%end%>
     
     <small style="color:black"> <%=link_to contribution.title, contribution %></small>
-    <a class="url_post" href="<%=contribution.url %>">(<%= contribution.url %>)</a>
+    <%if !contribution.url.empty?%>
+        <a class="url_post" href="<%=contribution.url %>">(<%= contribution.url %>)</a>
+    <%end%>
     </h4>
      
     <small >
@@ -64,10 +65,10 @@
         <%if current_user and Vote.exists?(idContrib: contribution.id, idUsuari: current_user.id)%>
             <td> | <a rel="nofollow" data-method="delete" href="/votes/<%= Vote.where(idContrib: contribution.id, idUsuari: current_user.id)[0].id %>">Unvote</a></td>
         <%end%>
-        <%if (Comment.where(contributions_id: contribution.id).size)==1%>
-            <td> | <%= link_to Comment.where(contributions_id: contribution.id).size, contribution %> comment</td>
+       <%if (Comment.where(contributions_id: contribution.id).size)==1%>
+            <td> | <%= Comment.where(contributions_id: contribution.id).size %><%= link_to ' comment', contribution %> </td>
         <%else%>
-            <td> | <%= link_to Comment.where(contributions_id: contribution.id).size, contribution %> comments</td>
+            <td> | <%= Comment.where(contributions_id: contribution.id).size %> <%=link_to ' comments', contribution %> </td>
         <%end%>
         <%if current_user and contribution.author == current_user.username %>
             <td> | <%= link_to 'Edit', edit_contribution_path(contribution) %></td>
