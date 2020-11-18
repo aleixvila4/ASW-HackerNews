@@ -3,13 +3,13 @@
     <div class="table">
        <div class="tr">
            <div class="d1">
+                <td style="width:5px;padding-right:2px"><a href= "/" ><img src="https://news.ycombinator.com/y18.gif" width="13" height="13" style="border:1px white solid;"></a></td>                
                 <b> <%= link_to 'HackerNews', contributions_path %></b>
                 <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
                 <td> | <%= link_to 'Ask', contributions_AskIndex_path %></td>
                 <% if current_user %>
                 <td> | <%= link_to 'Threads', user_comments_Index_path(:user => current_user) %></td>
                 <% end %>
-                <td> | <%= link_to 'Votes', votes_path %></td>
                 <td> | 
                     <% if current_user %>
                     <%= link_to 'Submit', new_contribution_path %>
@@ -21,7 +21,7 @@
 
             <div class="d3">
                 <% if current_user %>
-                <td><%= link_to current_user.username, edit_user_path(current_user) %></td>
+                <td><%= link_to current_user.username, edit_user_path(current_user) %></td> (<%= current_user.Karma %>)
                 <td> | <%= link_to 'Log out', logout_url %></td>
                 <% else %>
                 <%= link_to "Log in", "/auth/google_oauth2" %>
@@ -41,15 +41,14 @@
         <% if not Vote.exists?(idContrib: @contribution.id, idUsuari: current_user.id)%>
             <%= link_to '^', vote_new_path(:idContrib => @contribution.id, :idUsuari => current_user.id)%>
         <%end%>
-    <%end%>
+      <%end%>
       <% if @contribution.url.empty? %>
           <small style="color:black"> <%= @contribution.title %> </small>
-         
       <% else %>
           <small style="color:black"><%= @contribution.title%></small>
           <a class="url_post" href="<%= @contribution.url %>">(<%= @contribution.url %>)</a>
       <% end %> 
-   </div>
+    </div>
     <div class="info">
         <small class="comment">
             <font color="grey">
@@ -65,17 +64,20 @@
                 <td> | <a rel="nofollow" data-method="delete" href="/votes/<%= Vote.where(idContrib: @contribution.id)[0].id %>">Unvote</a></td>
             <%end%>
             <%if (@comments.size)==1%>
-                <td> | <%= link_to @comments.size, @contribution %> comment</td>
+                <td> | <%=@comments.size%> <%= link_to "comment", @contribution %> </td> 
             <%else%>
-                <td> | <%= link_to @comments.size, @contribution %> comments</td>
+                <td> | <%=@comments.size%> <%= link_to "comments", @contribution %> </td> 
             <%end%>
             <%if current_user and @contribution.author == current_user.username %>
                 <td> | <%= link_to 'Edit', edit_contribution_path(@contribution) %></td>
                 <td> | <%= link_to 'Delete', @contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
             <%end%>
             </font>
-            <br> 
+            <br>
         </small>
+        <% if !@contribution.text.empty? %>
+              <div class="comment"> <%= @contribution.text %> </div>
+        <% end %>
         <small class="comment">
             <%= render 'comments/form' %>
         </small>

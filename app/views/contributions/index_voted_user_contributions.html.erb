@@ -3,13 +3,13 @@
     <div class="table">
        <div class="tr">
            <div class="d1">
+                <td style="width:5px;padding-right:2px"><a href= "/" ><img src="https://news.ycombinator.com/y18.gif" width="13" height="13" style="border:1px white solid;"></a></td>                
                 <b> <%= link_to 'HackerNews', contributions_path %></b>
                 <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
                 <td> | <%= link_to 'Ask', contributions_AskIndex_path %></td>
                 <% if current_user %>
                 <td> | <%= link_to 'Threads', user_comments_Index_path(:user => current_user) %></td>
                 <% end %>
-                <td> | <%= link_to 'Votes', votes_path %></td>
                 <td> | 
                     <% if current_user %>
                     <%= link_to 'Submit', new_contribution_path %>
@@ -21,7 +21,7 @@
 
             <div class="d3">
                 <% if current_user %>
-                <td><%= link_to current_user.username, edit_user_path(current_user) %></td>
+                <td><%= link_to current_user.username, edit_user_path(current_user) %></td> (<%= current_user.Karma %>)
                 <td> | <%= link_to 'Log out', logout_url %></td>
                 <% else %>
                 <%= link_to "Log in", "/auth/google_oauth2" %>
@@ -47,7 +47,9 @@
             <%end%>
             
             <small style="color:black"> <%=link_to contribution.title, contribution %></small>
-            <a class="url_post" href="<%=contribution.url %>">(<%= contribution.url %>)</a>
+            <%if !contribution.url.empty?%>
+                <a class="url_post" href="<%=contribution.url %>">(<%= contribution.url %>)</a>
+            <%end%>
             </h4>
              
             <small >
