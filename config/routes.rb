@@ -12,7 +12,6 @@
  end
   get 'contributions_NewIndex', to: 'contributions#indexNew'
   get 'contributions_AskIndex', to: 'contributions#indexAsk'
-  get 'contributions_CommentsIndex', to: 'contributions#indexComments'
   
   get 'vote_new', to: 'votes#create'
   get 'delete_vote', to: 'votes#destroy'
@@ -21,14 +20,19 @@
   
   get 'show_user', to: 'users#show'
   get 'edit_user', to: 'users#edit_user'
-  get 'contributions_UserIndex', to: 'users#indexUserContributions'
+  get 'user_contributions_Index', to: 'contributions#index_user_contributions'
+  get 'user_voted_contributions_Index', to: 'contributions#index_voted_user_contributions'
   
   get 'comment_new', to: 'comments#create'
   get 'comment_vote_new', to: 'comment_votes#create'
+  get 'comment_Threads', to: 'comments#indexThreads'
+  get 'user_comments_Index', to: 'comments#index_user_comments'
+  get 'user_voted_comments_Index', to: 'comments#index_voted_user_comments'
   
   get 'reply_vote_new', to: 'reply_votes#create'
   
   get '/auth/:provider/callback' => 'sessions#omniauth'
   get 'logout', to: 'sessions#logout'
+  
   root 'contributions#index'
 end

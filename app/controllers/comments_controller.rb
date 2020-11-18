@@ -1,10 +1,14 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
 
-  # GET /comments
-  # GET /comments.json
-  def index
-    @comments = Comment.all
+  def index_user_comments
+    @user = User.find(params[:user])
+    @comments = Comment.where(users_id: @user.id).order("created_at DESC")
+  end
+  
+  def index_voted_user_comments
+    @user = User.find(params[:user])
+    @comments = Comment.where(users_id: @user.id).order("created_at DESC")
   end
 
   # GET /comments/1
@@ -65,7 +69,7 @@ class CommentsController < ApplicationController
     end
     @comment.destroy
     respond_to do |format|
-      format.html { redirect_to comments_url, notice: 'Comment was successfully destroyed.' }
+      format.html { redirect_to request.referrer, notice: 'Comment was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

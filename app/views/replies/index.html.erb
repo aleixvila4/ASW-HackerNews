@@ -16,8 +16,8 @@
     <% @replies.each do |reply| %>
       <tr>
         <td><%= reply.replyText %></td>
-        <td><%= reply.Comments_id %></td>
-        <td><%= reply.Users_id %></td>
+        <td><%= reply.comments_id %></td>
+        <td><%= reply.users_id %></td>
         <td><%= link_to 'Show', reply %></td>
         <td><%= link_to 'Edit', edit_reply_path(reply) %></td>
         <td><%= link_to 'Destroy', reply, method: :delete, data: { confirm: 'Are you sure?' } %></td>

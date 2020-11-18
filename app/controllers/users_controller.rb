@@ -6,11 +6,6 @@ class UsersController < ApplicationController
   def index
     @users = User.all
   end
-  
-  def indexUserContributions
-    logger.debug @user
-    @contributions = Contribution.where(author: @user.username).order("created_at DESC")
-  end
 
   # GET /users/1
   # GET /users/1.json

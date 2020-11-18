@@ -6,7 +6,8 @@
                 <b> <%= link_to 'HackerNews', contributions_path %></b>
                 <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
                 <td> | <%= link_to 'Ask', contributions_AskIndex_path %></td>
-                <td> | <%= link_to 'Comments', contributions_CommentsIndex_path %></td>
+                <td> | <%= link_to 'Threads', comment_Threads_path %></td>
+                <td> | <%= link_to 'Votes', votes_path %></td>
                 <td> | 
                     <% if current_user %>
                     <%= link_to 'Submit', new_contribution_path %>
@@ -94,7 +95,11 @@
                 <%= link_to time_ago_in_words(comment.created_at), comment %> ago
                 <% if current_user and CommentVote.exists?(idComment: comment.id, idUsuari: current_user.id)%>
                     <td><a rel="nofollow" data-method="delete" href="/comment_votes/<%= CommentVote.where(idComment: comment.id, idUsuari: current_user.id)[0].id %>">Unvote</a></td>
-                <% end %>  
+                <% end %>
+                <%if current_user and comment.users_id == current_user.id %>
+                <td> | <%= link_to 'Edit', edit_comment_path(comment) %></td>
+                <td> | <%= link_to 'Delete', comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                <%end%>
             </small>
             <div class="comment">
                 <%= comment.commentText %>
@@ -120,7 +125,11 @@
                     <%= link_to time_ago_in_words(reply.created_at), reply %> ago
                     <% if current_user and ReplyVote.exists?(idReply: reply.id, idUsuari: current_user.id)%>
                         <td><a rel="nofollow" data-method="delete" href="/comment_votes/<%= ReplyVote.where(idReply: reply.id, idUsuari: current_user.id)[0].id %>">Unvote</a></td>
-                    <% end %>  
+                    <% end %>
+                    <%if current_user and reply.users_id == current_user.id %>
+                    <td> | <%= link_to 'Edit', edit_reply_path(reply) %></td>
+                    <td> | <%= link_to 'Delete', reply, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                    <%end%>
                 </small>
                 <div class="comment">
                     <%= reply.replyText %>

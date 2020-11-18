@@ -16,13 +16,16 @@ class ContributionsController < ApplicationController
     @contributions = Contribution.where(url: "").order("created_at DESC")
   end
   
-  def indexUserContributions
-    #MIRAR AIXÔ
-    @contributions = Contribution.where(author: user.username).order("created_at DESC")
+  def index_user_contributions
+    @user = User.find(params[:user])
+    @contributions = Contribution.where(author: @user.username).order("created_at DESC")
   end
   
-  def indexComments
-    @contributions = Contribution.all.order("created_at DESC")
+  def index_voted_user_contributions
+    @votes = Vote.where(idUsuari: current_user.id)
+    puts "ESTIC AQUI--------------------"
+    logger.debug @votes
+    @contributions = Contribution.where(id: @votes.idContrib).order("created_at DESC")
   end
 
   # GET /contributions/1
@@ -50,13 +53,17 @@ class ContributionsController < ApplicationController
   def create
     @contribution = Contribution.new(contribution_params)
     @contribution.author = current_user.username
+    @vote = Vote.new(:idUsuari => current_user.id, :idContrib => @contribution.id)
+    @vote.idContrib = @contribution.id
+    @vote.save
+    @contribution.points += 1
     if Contribution.exists?(url: @contribution.url) and not @contribution.url.empty?
         @contribution = Contribution.find_by(url: @contribution.url)
-        render :show, notice: 'url existent'
+        redirect_to @contribution, notice: 'The URL you wanted to add already exists.'
     else
      if !defined?(@points) 
-          @points = 0 end
-          
+          @points = 0 
+     end
       respond_to do |format|
         if @contribution.save
           if not @contribution.url.empty?
@@ -97,9 +104,12 @@ class ContributionsController < ApplicationController
       end
       Comment.find_by(contributions_id: @contribution.id).destroy
     end
+    while not Vote.find_by(idContrib: @contribution.id).nil? do
+      Vote.find_by(idContrib: @contribution.id).destroy
+    end
     @contribution.destroy
     respond_to do |format|
-      format.html { redirect_to root_path}
+      format.html { redirect_to request.referrer}
       format.json { head :no_content }
     end
   end

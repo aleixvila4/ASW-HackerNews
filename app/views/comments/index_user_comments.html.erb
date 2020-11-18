@@ -1,0 +1,66 @@
+<div class= "Menus">
+    <div class="table">
+       <div class="tr">
+           <div class="d1">
+                <b> <%= link_to 'HackerNews', contributions_path %></b>
+                <td> <%= link_to 'New', contributions_NewIndex_path %></td> 
+                <td> | <%= link_to 'Ask', contributions_AskIndex_path %></td>
+                <td> | <%= link_to 'Threads', comment_Threads_path %></td>
+                <td> | <%= link_to 'Votes', votes_path %></td>
+                <td> | 
+                    <% if current_user %>
+                    <%= link_to 'Submit', new_contribution_path %>
+                    <% else %>
+                    <%= link_to 'Submit', "/auth/google_oauth2" %>
+                    <% end %>
+                </td>
+            </div>
+
+            <div class="d3">
+                <% if current_user %>
+                <td><%= link_to current_user.username, edit_user_path(current_user) %></td>
+                <td> | <%= link_to 'Log out', logout_url %></td>
+                <% else %>
+                <%= link_to "Log in", "/auth/google_oauth2" %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<body class="page">
+    <% @comments.each do |comment| %>
+    <div class="subpage">
+      <div class="info">
+            <small class="comment">
+                <%if not current_user %> 
+                    <%= link_to '^', "/auth/google_oauth2" %>
+                <%else%>
+                  <% if not CommentVote.exists?(idComment: comment.id, idUsuari: current_user.id)%>
+                        <%= link_to '^', comment_vote_new_path(:idComment => comment.id, :idUsuari => current_user.id)%>
+                  <%end%>
+                <%end%>
+                <%= link_to User.find_by(id: comment.users_id).username, user_path(User.find_by(id: comment.users_id)) %>
+                <%= link_to time_ago_in_words(comment.created_at), comment %> ago
+                <%= link_to "parent", Contribution.find_by(id: comment.contributions_id) %> | on:
+                <%= link_to Contribution.find_by(id: comment.contributions_id).title , Contribution.find_by(id: comment.contributions_id) %>
+                <% if current_user and CommentVote.exists?(idComment: comment.id, idUsuari: current_user.id)%>
+                    <td><a rel="nofollow" data-method="delete" href="/comment_votes/<%= CommentVote.where(idComment: comment.id, idUsuari: current_user.id)[0].id %>">Unvote</a></td>
+                <% end %>
+                <%if current_user and comment.users_id == current_user.id %>
+                <td> | <%= link_to 'Edit', edit_comment_path(comment) %></td>
+                <td> | <%= link_to 'Delete', comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                <%end%>
+            </small>
+            <div class="comment">
+                <%= comment.commentText %>
+            </div>
+            <small class="comment">
+                <%= link_to "reply", comment %> 
+            </small>
+        </div>
+        </div>
+    <% end %>
+</body>
+
+<br>
