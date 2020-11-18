@@ -109,7 +109,7 @@ class ContributionsController < ApplicationController
     end
     @contribution.destroy
     respond_to do |format|
-      format.html { redirect_to request.referrer}
+      format.html { redirect_to root_path,notice: 'Contribution was successfully deleted.' }
       format.json { head :no_content }
     end
   end
