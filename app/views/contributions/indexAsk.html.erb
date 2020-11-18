@@ -64,7 +64,7 @@
             <td> | <a rel="nofollow" data-method="delete" href="/votes/<%= Vote.where(idContrib: contribution.id, idUsuari: current_user.id)[0].id %>">Unvote</a></td>
         <%end%>
          <%if (Comment.where(contributions_id: contribution.id).size)==1%>
-            <td> | <%= Comment.where(contributions_id: contribution.id).size %><%= link_to ' comment', contribution %> </td>
+            <td> | <%= Comment.where(contributions_id: contribution.id).size %> <%= link_to ' comment', contribution %> </td>
         <%else%>
             <td> | <%= Comment.where(contributions_id: contribution.id).size %> <%=link_to ' comments', contribution %> </td>
         <%end%>

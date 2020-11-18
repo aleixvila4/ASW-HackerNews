@@ -61,11 +61,15 @@
                         <td><%= contribution.points %> point </td>
                     <% end %> 
                    
-                <!--MIRAR ESTO--> 
                 <td> by <%=link_to contribution.author, user_path(User.find_by(username: contribution.author)) %> </td>
                 <td> <%= time_ago_in_words(contribution.created_at) %> ago</td>
                 <%if current_user and Vote.exists?(idContrib: contribution.id, idUsuari: current_user.id)%>
                     <td><a rel="nofollow" data-method="delete" href="/votes/<%= Vote.where(idContrib: contribution.id, idUsuari: current_user.id)[0].id %>">Unvote</a></td>
+                <%end%>
+                <%if (Comment.where(contributions_id: contribution.id).size)==1%>
+                    <td> | <%= Comment.where(contributions_id: contribution.id).size %> <%= link_to ' comment', contribution %> </td>
+                <%else%>
+                    <td> | <%= Comment.where(contributions_id: contribution.id).size %> <%=link_to ' comments', contribution %> </td>
                 <%end%>
                 <%if current_user and contribution.author == current_user.username %>
                     <td> | <%= link_to 'Edit', edit_contribution_path(contribution) %></td>
