@@ -67,10 +67,6 @@
             <%else%>
                 <td> | <%= link_to @comments.size, @contribution %> comments</td>
             <%end%>
-            <%if current_user and @contribution.author == current_user.username %>
-                <td> | <%= link_to 'Edit', edit_contribution_path(@contribution) %></td>
-                <td> | <%= link_to 'Delete', @contribution, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-            <%end%>
             </font>
             <br> 
         </small>
