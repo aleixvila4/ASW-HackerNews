@@ -69,9 +69,7 @@
               <%end%>
               <%= link_to User.find_by(id: reply.users_id).username, user_path(User.find_by(id: reply.users_id)) %>
               <%= link_to time_ago_in_words(reply.created_at), reply %> ago
-              <% if current_user and ReplyVote.exists?(idReply: reply.id, idUsuari: current_user.id)%>
-                  <td><a rel="nofollow" data-method="delete" href="/reply_votes/<%= ReplyVote.where(idReply: reply.id, idUsuari: current_user.id)[0].id %>">Unvote</a></td>
-              <% end %>  
+              
               <%if current_user and reply.users_id == current_user.id %>
               <td> | <%= link_to 'Edit', edit_reply_path(reply) %></td>
               <td> | <%= link_to 'Delete', reply, method: :delete, data: { confirm: 'Are you sure?' } %></td>
