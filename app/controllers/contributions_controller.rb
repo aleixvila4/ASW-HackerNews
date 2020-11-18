@@ -86,7 +86,7 @@ class ContributionsController < ApplicationController
   def update
     respond_to do |format|
       if @contribution.update(contribution_params)
-        format.html { render :edit, notice: 'Contribution was successfully updated.' }
+        format.html { redirect_to @contribution, notice: 'Contribution was successfully updated.' }
         format.json { render :edit, status: :ok, location: @contribution }
       else
         format.html { render :edit }

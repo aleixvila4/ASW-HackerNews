@@ -48,9 +48,10 @@ class RepliesController < ApplicationController
   # PATCH/PUT /replies/1
   # PATCH/PUT /replies/1.json
   def update
+    @comment = Comment.find_by(id: @reply.comments_id)
     respond_to do |format|
       if @reply.update(reply_params)
-        format.html { redirect_to @reply, notice: 'Reply was successfully updated.' }
+        format.html { redirect_to @comment, notice: 'Reply was successfully updated.' }
         format.json { render :show, status: :ok, location: @reply }
       else
         format.html { render :edit }
