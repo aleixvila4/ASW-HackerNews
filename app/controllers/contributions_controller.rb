@@ -49,31 +49,40 @@ class ContributionsController < ApplicationController
   # POST /contributions
   # POST /contributions.json
   def create
+    require 'uri'
     @contribution = Contribution.new(contribution_params)
     @contribution.author = current_user.username
-    if Contribution.exists?(url: @contribution.url) and not @contribution.url.empty?
-        @contribution = Contribution.find_by(url: @contribution.url)
-        redirect_to @contribution, notice: 'The URL you wanted to add already exists.'
-    else
-     if !defined?(@points) 
-          @points = 0 
-     end
-      respond_to do |format|
-        if @contribution.save
-          @vote = Vote.new(:idUsuari => current_user.id, :idContrib => @contribution.id)
-          @vote.save
-          @contribution.points += 1
-          @contribution.save
-          if not @contribution.url.empty?
-          format.html { redirect_to contributions_url}
-          else
-          format.html { redirect_to contributions_AskIndex_path}
-          end
-        else
-          format.html { render :new }
-          format.json { render json: @contribution.errors, status: :unprocessable_entity }
-        end
+    if not @contribution.title.empty? and (not @contribution.url.empty? or not @contribution.text.empty?)
+      if Contribution.exists?(url: @contribution.url) and not @contribution.url.empty?
+          @contribution = Contribution.find_by(url: @contribution.url)
+          redirect_to @contribution, notice: 'The URL you wanted to add already exists.'
       end
+      if @contribution.url =~ URI::regexp
+        logger.debug @contribution.url
+         if !defined?(@points) 
+              @points = 0 
+         end
+          respond_to do |format|
+            if @contribution.save
+              @vote = Vote.new(:idUsuari => current_user.id, :idContrib => @contribution.id)
+              @vote.save
+              @contribution.points += 1
+              @contribution.save
+              if not @contribution.url.empty?
+              format.html { redirect_to contributions_url}
+              else
+              format.html { redirect_to contributions_AskIndex_path}
+              end
+            else
+              format.html { render :new }
+              format.json { render json: @contribution.errors, status: :unprocessable_entity }
+            end
+          end
+      else 
+        redirect_to request.referrer, notice: "The URL is not valid."
+      end
+    else 
+      redirect_to request.referrer, notice: 'All the fields are empty.'
     end
   
     
