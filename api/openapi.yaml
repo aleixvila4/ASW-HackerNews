@@ -8,12 +8,14 @@ info:
   Projecte d'ASW de l'Èric Pérez, la Sufang Zhou i l'Aleix Vila"
 
 servers:
-  - url: 'http://3.238.143.84:8080'
+  - url: 'http://3.238.27.167:8080'
 
 paths:
   /contributions:
     get:
-      summary: Retorna totes les contribucions Url ordenades de més a menys puntuació.
+      tags:
+      - Contributions
+      description: Retorna totes les contribucions Url ordenades de més a menys puntuació.
       responses:
         200:
           description: successful operation
@@ -24,9 +26,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/Contribution'
   
-  /contributions_NewIndex:
+  /contributions/api/new:
     get:
-      summary: Retorna totes les contribucions ordenades de més a menys puntuació.
+      tags:
+      - Contributions
+      description: Retorna totes les contribucions ordenades de més a menys puntuació.
       responses:
         200:
           description: successful operation
@@ -37,9 +41,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/Contribution'
                   
-  /contributions_AskIndex:
+  /contributions/api/ask:
     get:
-      summary: Retorna totes les contribucions de tipus Ask ordenades de més a menys puntuació.
+      tags:
+      - Contributions
+      description: Retorna totes les contribucions de tipus Ask ordenades de més a menys puntuació.
       responses:
         200:
           description: successful operation
@@ -49,6 +55,60 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Contribution'
+                  
+  /contributions/{id}:
+    get:
+      tags:
+      - Contributions
+      description: Retorna la informació d'una contribució a través del seu id.
+      parameters:
+      - name: id
+        in: path
+        description: ID de la contribució a retornar.
+        required: true
+        schema:
+          type: integer
+          format: int
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contribution'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+                
+  /comments/{id}:
+    get:
+      tags:
+      - Comments
+      description: Retorna la informació d'un comentari a través del seu id.
+      parameters:
+      - name: id
+        in: path
+        description: ID del comentari a retornar.
+        required: true
+        schema:
+          type: integer
+          format: int
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
    
 components:
   schemas:
@@ -67,5 +127,36 @@ components:
           type: string
         created_at:
           type: string
+        updated_at:
+          type: string
         points:
           type: integer
+          
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+        commentText:
+          type: string
+        contribution:
+          $ref: '#/components/schemas/Contribution'
+        #Mirar com implementar users
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        points:
+          type: integer
+    
+    ErrorResult:
+      type: object
+      properties:
+        status:
+          type: integer
+          enum: [400, 401, 403, 404, 409]
+        error: 
+          type: string
+          enum: ["Bad Request", "Unauthorized", "Forbidden", "Not Found", "Conflict"]
+        message: 
+          type: string
