@@ -9,11 +9,13 @@ class ContributionsController < ApplicationController
 
   def indexNew
     @contributions = Contribution.all.order("created_at DESC")
+    render json: @contributions
   end
   
   
   def indexAsk
     @contributions = Contribution.where(url: "").order("created_at DESC")
+    render json: @contributions
   end
   
   def index_user_contributions
@@ -120,7 +122,6 @@ class ContributionsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
   
 
   private

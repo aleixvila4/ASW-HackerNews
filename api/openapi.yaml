@@ -1,0 +1,71 @@
+openapi: 3.0.1
+info:
+  title: "HackerNews"
+  version: "1.0.0"
+  description: "API REST de nivell 2 per a HackerNews.
+  
+  
+  Projecte d'ASW de l'Èric Pérez, la Sufang Zhou i l'Aleix Vila"
+
+servers:
+  - url: 'http://3.238.143.84:8080'
+
+paths:
+  /contributions:
+    get:
+      summary: Retorna totes les contribucions Url ordenades de més a menys puntuació.
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contribution'
+  
+  /contributions_NewIndex:
+    get:
+      summary: Retorna totes les contribucions ordenades de més a menys puntuació.
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contribution'
+                  
+  /contributions_AskIndex:
+    get:
+      summary: Retorna totes les contribucions de tipus Ask ordenades de més a menys puntuació.
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contribution'
+   
+components:
+  schemas:
+    Contribution:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        author:
+          type: string
+        url:
+          type: string
+        text:
+          type: string
+        created_at:
+          type: string
+        points:
+          type: integer
