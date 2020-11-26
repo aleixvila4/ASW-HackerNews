@@ -8,10 +8,10 @@ info:
   Projecte d'ASW de l'Èric Pérez, la Sufang Zhou i l'Aleix Vila"
 
 servers:
-  - url: 'http://3.237.234.168:8080'
+  - url: 'http://3.236.160.83:8080'
 
 paths:
-  /contributions:
+  /api/contributions:
     get:
       tags:
       - Contributions
@@ -30,7 +30,7 @@ paths:
     get:
       tags:
       - Contributions
-      description: Retorna totes les contribucions ordenades de més a menys puntuació.
+      description: Retorna totes les contribucions ordenades de més a menys recent.
       responses:
         200:
           description: successful operation
@@ -45,7 +45,7 @@ paths:
     get:
       tags:
       - Contributions
-      description: Retorna totes les contribucions de tipus Ask ordenades de més a menys puntuació.
+      description: Retorna totes les contribucions de tipus Ask ordenades de més a menys recent.
       responses:
         200:
           description: successful operation
@@ -56,7 +56,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Contribution'
                   
-  /contributions/{id}:
+  /api/contributions/{id}:
     get:
       tags:
       - Contributions

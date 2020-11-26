@@ -126,18 +126,6 @@ class ContributionsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
-  def indexNewAPI
-    @contributions = Contribution.all.order("created_at DESC")
-    render json: @contributions
-  end
-  
-  
-  def indexAskAPI
-    @contributions = Contribution.where(url: "").order("created_at DESC")
-    render json: @contributions
-  end
-  
 
   private
     # Use callbacks to share common setup or constraints between actions.
