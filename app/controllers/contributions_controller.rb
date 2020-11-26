@@ -58,7 +58,6 @@ class ContributionsController < ApplicationController
           redirect_to @contribution, notice: 'The URL you wanted to add already exists.'
       end
       if @contribution.url =~ URI::regexp
-        logger.debug @contribution.url
          if !defined?(@points) 
               @points = 0 
          end
@@ -120,7 +119,6 @@ class ContributionsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
   
   def indexNewAPI
     @contributions = Contribution.all.order("created_at DESC")
