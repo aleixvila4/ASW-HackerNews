@@ -50,19 +50,24 @@ class ContributionsController < ApplicationController
   # POST /contributions.json
   def create
     require 'uri'
+    b = 1
     @contribution = Contribution.new(contribution_params)
     @contribution.author = current_user.username
     if not @contribution.title.empty? and (not @contribution.url.empty? or not @contribution.text.empty?)
-      if Contribution.exists?(url: @contribution.url) and not @contribution.url.empty?
+      if not @contribution.url.empty?
+        if Contribution.exists?(url: @contribution.url)
           @contribution = Contribution.find_by(url: @contribution.url)
-          redirect_to @contribution, notice: 'The URL you wanted to add already exists.'
+          b = 2;
+        elsif @contribution.url =~ URI::regexp
+            if !defined?(@points) 
+                @points = 0 
+            end
+        else
+          b = 3;
+        end
       end
-      if @contribution.url =~ URI::regexp
-        logger.debug @contribution.url
-         if !defined?(@points) 
-              @points = 0 
-         end
-          respond_to do |format|
+      if b == 1
+            respond_to do |format|
             if @contribution.save
               @vote = Vote.new(:idUsuari => current_user.id, :idContrib => @contribution.id)
               @vote.save
@@ -78,14 +83,15 @@ class ContributionsController < ApplicationController
               format.json { render json: @contribution.errors, status: :unprocessable_entity }
             end
           end
+      elsif b == 2
+        redirect_to @contribution, notice: 'The URL you wanted to add already exists.'
       else 
-        redirect_to request.referrer, notice: "The URL is not valid."
+        redirect_to request.referrer, notice: "The URL is not valid." 
       end
     else 
       redirect_to request.referrer, notice: 'All the fields are empty.'
     end
-  
-    
+
   end
 
   # PATCH/PUT /contributions/1
@@ -120,7 +126,6 @@ class ContributionsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
   
   def indexNewAPI
     @contributions = Contribution.all.order("created_at DESC")
