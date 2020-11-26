@@ -9,6 +9,7 @@ class User < ApplicationRecord
         where(email: auth.info.email).first_or_initialize do |user|
           user.username = auth.info.name
           user.email = auth.info.email
+          user.auth_token = auth.credentials.token
           user.Karma = SecureRandom.hex
         end
     end
