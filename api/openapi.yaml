@@ -8,7 +8,7 @@ info:
   Projecte d'ASW de l'Èric Pérez, la Sufang Zhou i l'Aleix Vila"
 
 servers:
-  - url: 'http://3.238.27.167:8080'
+  - url: 'http://3.237.234.168:8080'
 
 paths:
   /contributions:
@@ -26,7 +26,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Contribution'
   
-  /contributions/api/new:
+  /api/contributions/new:
     get:
       tags:
       - Contributions
@@ -41,7 +41,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Contribution'
                   
-  /contributions/api/ask:
+  /api/contributions/ask:
     get:
       tags:
       - Contributions

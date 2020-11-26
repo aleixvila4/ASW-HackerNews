@@ -35,8 +35,8 @@
   get 'logout', to: 'sessions#logout'
   get 'form_edit', to: 'contributions#edit'
   
-  get 'contributions/api/new', to: 'contributions#indexNewAPI'
-  get 'contributions/api/ask', to: 'contributions#indexAskAPI'
+  get 'api/contributions/new', to: 'contributions#indexNewAPI'
+  get 'api/contributions/ask', to: 'contributions#indexAskAPI'
   
   root 'contributions#index'
 end
