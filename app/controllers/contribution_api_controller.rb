@@ -1,23 +1,30 @@
 class ContributionApiController < ApplicationController
   before_action :set_contribution, only: [:show, :edit, :update, :destroy, :points]
+  before_action :authenticate
   
   # GET /contributions
   # GET /api/contributions.json
   def indexAPI
-    @contributions = Contribution.where.not(url: "").order(points: :desc)
-    render json: @contributions
+    if @flag == 0
+      @contributions = Contribution.where.not(url: "").order(points: :desc)
+      render json: @contributions
+    end
   end
   
   
   def indexNewAPI
-    @contributions = Contribution.all.order("created_at DESC")
-    render json: @contributions
+    if @flag == 0
+     @contributions = Contribution.all.order("created_at DESC")
+     render json: @contributions
+    end
   end
   
   
   def indexAskAPI
-    @contributions = Contribution.where(url: "").order("created_at DESC")
-    render json: @contributions
+    if @flag == 0
+      @contributions = Contribution.where(url: "").order("created_at DESC")
+      render json: @contributions
+    end
   end
   
   def show

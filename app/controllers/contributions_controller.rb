@@ -91,7 +91,6 @@ class ContributionsController < ApplicationController
     else 
       redirect_to request.referrer, notice: 'All the fields are empty.'
     end
-
   end
 
   # PATCH/PUT /contributions/1
