@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_17_160728) do
+ActiveRecord::Schema.define(version: 2020_11_26_180154) do
 
   create_table "comment_votes", force: :cascade do |t|
     t.string "idComment"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 2020_11_17_160728) do
     t.text "about"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "auth_token"
   end
 
   create_table "votes", force: :cascade do |t|

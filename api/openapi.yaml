@@ -7,6 +7,16 @@ info:
   
   Projecte d'ASW de l'Èric Pérez, la Sufang Zhou i l'Aleix Vila"
 
+components:
+  securitySchemes:
+    ApiKeyAuth:        
+      type: apiKey
+      in: header      
+      name: X-API-KEY  
+      
+security:
+  - ApiKeyAuth: []     
+
 servers:
   - url: 'http://3.236.160.83:8080'
 
