@@ -4,21 +4,14 @@ info:
   version: "1.0.0"
   description: "API REST de nivell 2 per a HackerNews.
   
-  
   Projecte d'ASW de l'Èric Pérez, la Sufang Zhou i l'Aleix Vila"
 
-components:
-  securitySchemes:
-    ApiKeyAuth:        
-      type: apiKey
-      in: header      
-      name: X-API-KEY  
-      
 security:
-  - ApiKeyAuth: []     
+  - ApiKeyAuth: []   
 
 servers:
-  - url: 'http://3.236.160.83:8080'
+  - url: 'https://fast-falls-50985.herokuapp.com/'
+  # - url: 'http://3.236.160.83:8080'
 
 paths:
   /api/contributions:
@@ -66,7 +59,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Contribution'
                   
-  /api/contributions/{id}:
+  /contributions/{id}:
     get:
       tags:
       - Contributions
@@ -112,7 +105,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Comment'
+                $ref: '#/components/schemas/Comments'
         404:
           description: 'Error: Not Found'
           content:
@@ -121,6 +114,13 @@ paths:
                 $ref: '#/components/schemas/ErrorResult'
    
 components:
+
+  securitySchemes:
+    ApiKeyAuth:        
+      type: apiKey
+      in: header      
+      name: ApiKeyAuth
+
   schemas:
     Contribution:
       type: object
@@ -142,7 +142,7 @@ components:
         points:
           type: integer
           
-    Comment:
+    Comments:
       type: object
       properties:
         id:
@@ -151,13 +151,34 @@ components:
           type: string
         contribution:
           $ref: '#/components/schemas/Contribution'
-        #Mirar com implementar users
+        users_id:
+          $ref: '#/components/schemas/Users'
         created_at:
           type: string
         updated_at:
           type: string
         points:
           type: integer
+          
+    Users:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        Karma:
+          type: integer
+        email:
+          type: string
+        about:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        auth_token:
+          type: string
     
     ErrorResult:
       type: object
