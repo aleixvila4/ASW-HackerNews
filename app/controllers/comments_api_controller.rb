@@ -12,6 +12,21 @@ class CommentsApiController < ApplicationController
       end
     end
   end
+  
+  def update
+    if @comment.update(comment_params)
+      format.json { render :show, status: :ok, location: @comment }
+    end
+  end
+  
+  def destroyAPI
+    while not Reply.find_by(comments_id: @comment.id).nil? do
+      Reply.find_by(comments_id: @comment.id).destroy
+    end
+    @comment.destroy
+      format.json { head :no_content }
+  end
+  
 
  private
     # Use callbacks to share common setup or constraints between actions.

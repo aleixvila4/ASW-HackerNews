@@ -41,6 +41,7 @@
   get 'api/contributions/comments/:id', to: 'contribution_api#index_comments_contributions'
   post 'api/contributions/new', to: 'contribution_api#createContributionAPI'
   put 'api/contributions/:id', to: 'contribution_api#updateAPI'
+  delete 'api/contributions/:id', to: 'contribution_api#destroyAPI'
   
   get 'api/comments/replies/:id', to: 'comments_api#index_replies_comments'
   

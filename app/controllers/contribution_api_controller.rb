@@ -1,5 +1,5 @@
 class ContributionApiController < ApplicationController
-  before_action :set_contribution, only: [:show, :edit, :update, :destroy, :points]
+  before_action :set_contribution, only: [:show, :edit, :updateAPI, :destroyAPI, :points]
   before_action :authenticate
   
   # GET /contributions
@@ -58,27 +58,26 @@ class ContributionApiController < ApplicationController
           render :json => {:error => "The URL is not valid"}.to_json, status: 400
         end
     else
-          @contribution.save
-          @vote = Vote.new(:idUsuari => @user[0].id, :idContrib => @contribution.id)
-          @vote.save
-          @contribution.points += 1
-          @contribution.save
-          render json: @contribution
+      @contribution.save
+      @vote = Vote.new(:idUsuari => @user[0].id, :idContrib => @contribution.id)
+      @vote.save
+      @contribution.points += 1
+      @contribution.save
+      render json: @contribution
     end
   end
   
   def updateAPI
     @C = Contribution.new(contribution_params)
-    logger.debug @C.title
+    @user = User.where(auth_token: request.headers['ApiKeyAuth'])
     if @C.title.empty?
-      logger.debug "11111111111111111111111"
       render :json => {:error => "The title is empty"}.to_json, status: 400
     elsif @contribution.url.empty? and @C.text.empty?
       render :json => {:error => "The text is empty"}.to_json, status: 400
-    elsif @contribution.author != @C.author
+    elsif @contribution.author != @user[0].username
       render :json => {:error => "Unauthorized user"}.to_json, status: 401
     elsif @contribution.update(contribution_params)
-        render json: @contribution
+    render json: @contribution
     end
   end
 
@@ -93,11 +92,8 @@ class ContributionApiController < ApplicationController
       Vote.find_by(idContrib: @contribution.id).destroy
     end
     @contribution.destroy
-    respond_to do |format|
-      format.html { redirect_to root_path,notice: 'Contribution was successfully deleted.' }
-      format.json { head :no_content }
-    end
-  end  
+    render :json => {:message => "removed" }.to_json, status: 204
+  end
   
 private
     # Use callbacks to share common setup or constraints between actions.
