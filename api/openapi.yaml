@@ -10,8 +10,8 @@ security:
   - ApiKeyAuth: []   
 
 servers:
-  # - url: 'https://fast-falls-50985.herokuapp.com/'
-  - url: 'http://3.235.105.176:8080'
+  #- url: 'https://fast-falls-50985.herokuapp.com/'
+  - url: 'http://3.239.44.53:8080'
 
 paths:
   /api/contributions:
@@ -125,6 +125,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResult'
+    
+  /api/contributions/{id}:
     delete:
         tags:
         - Contributions
@@ -139,7 +141,7 @@ paths:
             format: int
         responses:
           204:
-            description: Contribution esborrat.
+            description: Contribution esborrat
             content:
               application/json: {}
           404:
@@ -174,7 +176,6 @@ paths:
           schema:
             type: integer
             format: int
-            
       requestBody:
         description: Titol, autor, url i text de la contribució
         content:
