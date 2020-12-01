@@ -39,8 +39,65 @@ class ContributionApiController < ApplicationController
   end
   
   def createContributionAPI
-    
+    require 'uri'
+    @contribution = Contribution.new(contribution_params)
+    @user = User.where(auth_token: request.headers['ApiKeyAuth'])
+    @contribution.author = @user[0].username
+    if @contribution.title.empty?
+      render :json => {:error => "The title is empty"}.to_json, status: 400
+    elsif @contribution.url.empty? and @contribution.text.empty?
+      render :json => {:error => "The fields are empty"}.to_json, status: 400
+    elsif not @contribution.url.empty?
+        if Contribution.exists?(url: @contribution.url)
+          render :json => {:error => "The URL already exists"}.to_json, status: 403
+        elsif @contribution.url =~ URI::regexp
+            if !defined?(@points) 
+                @points = 0 
+            end
+        else
+          render :json => {:error => "The URL is not valid"}.to_json, status: 400
+        end
+    else
+          @contribution.save
+          @vote = Vote.new(:idUsuari => @user[0].id, :idContrib => @contribution.id)
+          @vote.save
+          @contribution.points += 1
+          @contribution.save
+          render json: @contribution
+    end
   end
+  
+  def updateAPI
+    @C = Contribution.new(contribution_params)
+    logger.debug @C.title
+    if @C.title.empty?
+      logger.debug "11111111111111111111111"
+      render :json => {:error => "The title is empty"}.to_json, status: 400
+    elsif @contribution.url.empty? and @C.text.empty?
+      render :json => {:error => "The text is empty"}.to_json, status: 400
+    elsif @contribution.author != @C.author
+      render :json => {:error => "Unauthorized user"}.to_json, status: 401
+    elsif @contribution.update(contribution_params)
+        render json: @contribution
+    end
+  end
+
+  def destroyAPI
+    while not Comment.find_by(contributions_id: @contribution.id).nil? do
+      while not Reply.find_by(comments_id: Comment.find_by(contributions_id: @contribution.id).id).nil? do
+      Reply.find_by(comments_id: Comment.find_by(contributions_id: @contribution.id).id).destroy
+      end
+      Comment.find_by(contributions_id: @contribution.id).destroy
+    end
+    while not Vote.find_by(idContrib: @contribution.id).nil? do
+      Vote.find_by(idContrib: @contribution.id).destroy
+    end
+    @contribution.destroy
+    respond_to do |format|
+      format.html { redirect_to root_path,notice: 'Contribution was successfully deleted.' }
+      format.json { head :no_content }
+    end
+  end  
   
 private
     # Use callbacks to share common setup or constraints between actions.
@@ -51,6 +108,6 @@ private
 
     # Only allow a list of trusted parameters through.
     def contribution_params
-      params.require(:contribution).permit(:title, :author, :url, :text)
+      params.require(:contribution_api).permit(:title, :author, :url, :text)
     end
 end

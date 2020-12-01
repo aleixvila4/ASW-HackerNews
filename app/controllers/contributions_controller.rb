@@ -96,6 +96,14 @@ class ContributionsController < ApplicationController
   # PATCH/PUT /contributions/1
   # PATCH/PUT /contributions/1.json
   def update
+    @C = Contribution.new(contribution_params)
+    if @C.title.empty?
+      redirect_to @contribution, notice: "The title is empty." 
+    elsif @contribution.url.empty? and @C.text.empty?
+      redirect_to @contribution, notice: "The text is empty."
+    elsif @contribution.author != @C.author
+      redirect_to @contribution, notice: "Unauthorized user."
+    else
     respond_to do |format|
       if @contribution.update(contribution_params)
         format.html { redirect_to @contribution, notice: 'Contribution was successfully updated.' }
@@ -105,8 +113,9 @@ class ContributionsController < ApplicationController
         format.json { render json: @contribution.errors, status: :unprocessable_entity }
       end
     end
+    end
   end
-
+  
   # DELETE /contributions/1
   # DELETE /contributions/1.json
   def destroy

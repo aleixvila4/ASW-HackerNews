@@ -40,6 +40,7 @@
   get 'api/contributions/ask', to: 'contribution_api#indexAskAPI'
   get 'api/contributions/comments/:id', to: 'contribution_api#index_comments_contributions'
   post 'api/contributions/new', to: 'contribution_api#createContributionAPI'
+  put 'api/contributions/:id', to: 'contribution_api#updateAPI'
   
   get 'api/comments/replies/:id', to: 'comments_api#index_replies_comments'
   
