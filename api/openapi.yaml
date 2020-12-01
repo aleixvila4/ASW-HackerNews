@@ -10,8 +10,8 @@ security:
   - ApiKeyAuth: []   
 
 servers:
-  - url: 'https://fast-falls-50985.herokuapp.com/'
-  # - url: 'http://3.236.160.83:8080'
+  # - url: 'https://fast-falls-50985.herokuapp.com/'
+  - url: 'http://3.238.108.74:8080'
 
 paths:
   /api/contributions:
@@ -30,6 +30,47 @@ paths:
                   $ref: '#/components/schemas/Contribution'
   
   /api/contributions/new:
+    post:
+      tags:
+      - Contributions
+      description: Afegeix una contribució establint el seu tipus segons el paràmetres que es passin amb la crida.
+      parameters:
+      - name: title
+        in: header
+        description: Títol de la contribució
+        required: true
+        schema:
+          type: string
+      - name: url
+        in: header
+        description: Url de la contribució de tipus url
+        required: false
+        schema:
+          type: string
+      - name: text
+        in: header
+        description: Text de la contribució
+        required: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contribution'
+        400:
+          description: 'Error: url or text must be set correctly'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+  
+  
+  /api/contributions/newest:
     get:
       tags:
       - Contributions
@@ -44,6 +85,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Contribution'
                   
+  
   /api/contributions/ask:
     get:
       tags:
@@ -59,6 +101,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Contribution'
                   
+  
   /contributions/{id}:
     get:
       tags:
@@ -85,7 +128,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResult'
-                
+  
+  /api/contributions/comments/{id}:
+    get:
+      tags:
+      - Contributions
+      description: Retorna tots els comentaris d'una contribució.
+      parameters:
+      - name: id
+        in: path
+        description: ID de la contribució.
+        required: true
+        schema:
+          type: integer
+          format: int
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contribution'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+    
   /comments/{id}:
     get:
       tags:
@@ -105,7 +175,61 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Comments'
+                $ref: '#/components/schemas/Comment'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+                
+  /api/comments/replies/{id}:
+    get:
+      tags:
+      - Comments
+      description: Retorna totes les replies d'un comentari.
+      parameters:
+      - name: id
+        in: path
+        description: ID del comentari.
+        required: true
+        schema:
+          type: integer
+          format: int
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contribution'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+    
+  /replies/{id}:
+    get:
+      tags:
+      - Replies
+      description: Retorna la informació d'una reply a través del seu id.
+      parameters:
+      - name: id
+        in: path
+        description: ID de la reply a retornar.
+        required: true
+        schema:
+          type: integer
+          format: int
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
         404:
           description: 'Error: Not Found'
           content:
@@ -142,7 +266,7 @@ components:
         points:
           type: integer
           
-    Comments:
+    Comment:
       type: object
       properties:
         id:
@@ -152,7 +276,25 @@ components:
         contribution:
           $ref: '#/components/schemas/Contribution'
         users_id:
-          $ref: '#/components/schemas/Users'
+          $ref: '#/components/schemas/User'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        points:
+          type: integer
+    
+    Reply:
+      type: object
+      properties:
+        id:
+          type: integer
+        replyText:
+          type: string
+        comment:
+          $ref: '#/components/schemas/Comment'
+        users_id:
+          $ref: '#/components/schemas/User'
         created_at:
           type: string
         updated_at:
@@ -160,7 +302,7 @@ components:
         points:
           type: integer
           
-    Users:
+    User:
       type: object
       properties:
         id:

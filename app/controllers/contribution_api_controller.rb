@@ -27,9 +27,30 @@ class ContributionApiController < ApplicationController
     end
   end
   
-  def show
-    @comment = Comment.new
-    @comments = Comment.where(contributions_id: @contribution.id).order("created_at DESC")
+  def index_comments_contributions
+    if @flag == 0
+      @comments = Comment.where(contributions_id: params[:id]).order("created_at DESC")
+      if @comments[0] == nil
+        render :json => {"Error": "Comment not found"}.to_json, status: 404
+      else
+        render json: @comments
+      end
+    end
   end
   
+  def createContributionAPI
+    
+  end
+  
+private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_contribution
+      @contribution = Contribution.find(params[:id])
+      
+    end
+
+    # Only allow a list of trusted parameters through.
+    def contribution_params
+      params.require(:contribution).permit(:title, :author, :url, :text)
+    end
 end

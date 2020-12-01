@@ -36,8 +36,12 @@
   get 'form_edit', to: 'contributions#edit'
   
   get 'api/contributions', to: 'contribution_api#indexAPI'
-  get 'api/contributions/new', to: 'contribution_api#indexNewAPI'
+  get 'api/contributions/newest', to: 'contribution_api#indexNewAPI'
   get 'api/contributions/ask', to: 'contribution_api#indexAskAPI'
+  get 'api/contributions/comments/:id', to: 'contribution_api#index_comments_contributions'
+  post 'api/contributions/new', to: 'contribution_api#createContributionAPI'
+  
+  get 'api/comments/replies/:id', to: 'comments_api#index_replies_comments'
   
   root 'contributions#index'
 end
