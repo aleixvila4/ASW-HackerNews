@@ -1,5 +1,5 @@
 class SessionsApiController < ApplicationController
-    before_action :authenticate, except: [ :index]
+    before_action :authenticate, except: [:index]
     
     def show_sessions
         @usuario = User.where(id: params[:id])
