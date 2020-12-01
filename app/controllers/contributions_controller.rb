@@ -98,9 +98,11 @@ class ContributionsController < ApplicationController
   def update
     @C = Contribution.new(contribution_params)
     if @C.title.empty?
-      redirect_to request.referrer, notice: "The title is empty." 
-    elsif @C.url.nil? and @C.text.empty?
-      redirect_to request.referrer, notice: "The text is empty."
+      redirect_to @contribution, notice: "The title is empty." 
+    elsif @contribution.url.empty? and @C.text.empty?
+      redirect_to @contribution, notice: "The text is empty."
+    elsif @contribution.author != @C.author
+      redirect_to @contribution, notice: "Unauthorized user."
     else
     respond_to do |format|
       if @contribution.update(contribution_params)
