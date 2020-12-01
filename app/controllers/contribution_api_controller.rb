@@ -39,8 +39,34 @@ class ContributionApiController < ApplicationController
   end
   
   def createContributionAPI
-    
+    require 'uri'
+    @contribution = Contribution.new(contribution_params)
+    @user = User.where(auth_token: request.headers['ApiKeyAuth'])
+    @contribution.author = @user[0].username
+    if @contribution.title.empty?
+      render :json => {:error => "The title is empty"}.to_json, status: 400
+    elsif @contribution.url.empty? and @contribution.text.empty?
+      render :json => {:error => "The fields are empty"}.to_json, status: 400
+    elsif not @contribution.url.empty?
+        if Contribution.exists?(url: @contribution.url)
+          render :json => {:error => "The URL already exists"}.to_json, status: 403
+        elsif @contribution.url =~ URI::regexp
+            if !defined?(@points) 
+                @points = 0 
+            end
+        else
+          render :json => {:error => "The URL is not valid"}.to_json, status: 400
+        end
+    else
+          @contribution.save
+          @vote = Vote.new(:idUsuari => @user[0].id, :idContrib => @contribution.id)
+          @vote.save
+          @contribution.points += 1
+          @contribution.save
+          render json: @contribution
+    end
   end
+
   
 private
     # Use callbacks to share common setup or constraints between actions.
@@ -51,6 +77,6 @@ private
 
     # Only allow a list of trusted parameters through.
     def contribution_params
-      params.require(:contribution).permit(:title, :author, :url, :text)
+      params.require(:contribution_api).permit(:title, :author, :url, :text)
     end
 end
