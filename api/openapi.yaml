@@ -10,8 +10,8 @@ security:
   - ApiKeyAuth: []   
 
 servers:
-  #- url: 'https://fast-falls-50985.herokuapp.com/'
-  - url: 'http://3.239.26.222:8080'
+  - url: 'https://fast-falls-50985.herokuapp.com/'
+  #- url: 'http://3.239.26.222:8080'
 
 paths:
   /api/contributions:
