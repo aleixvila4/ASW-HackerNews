@@ -6,25 +6,41 @@ class ContributionsApiController < ApplicationController
   # GET /api/contributions.json
   def indexAPI
     @contributions = Contribution.where.not(url: "").order(points: :desc)
-    render json: @contributions
+    if @contributions[0] == nil
+      render :json => {"Error": "Contributions not found"}.to_json, status: 404
+    else
+      render json: @contributions
+    end
   end
   
   
   def indexNewAPI
     @contributions = Contribution.all.order("created_at DESC")
-    render json: @contributions
+    if @contributions[0] == nil
+      render :json => {"Error": "Contributions not found"}.to_json, status: 404
+    else
+      render json: @contributions
+    end
   end
   
   
   def indexAskAPI
     @contributions = Contribution.where(url: "").order("created_at DESC")
-    render json: @contributions
+    if @contributions[0] == nil
+      render :json => {"Error": "Contributions not found"}.to_json, status: 404
+    else
+      render json: @contributions
+    end
   end
   
   def index_user_contributionsAPI
     @user = User.find(params[:id])
     @contributions = Contribution.where(author: @user.username).order("created_at DESC")
-    render json: @contributions
+    if @contributions[0] == nil
+      render :json => {"Error": "Contributions not found"}.to_json, status: 404
+    else
+      render json: @contributions
+    end
   end
   
   def show_contributionAPI

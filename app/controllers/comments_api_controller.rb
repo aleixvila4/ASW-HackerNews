@@ -5,7 +5,11 @@ class CommentsApiController < ApplicationController
   def index_user_commentsAPI
     @user = User.find(params[:id])
     @comments = Comment.where(users_id: @user.id).order("created_at DESC")
-    render json: @comments
+    if @comments[0] == nil
+      render :json => {"Error": "Comments not found"}.to_json, status: 404
+    else
+      render json: @comments
+    end
   end
   
   def show_commentAPI
