@@ -55,7 +55,11 @@ end
 private
     # Use callbacks to share common setup or constraints between actions.
     def set_reply
-      @reply = Reply.find(params[:id])
+      @reply = Reply.where(id: params[:id])
+      if @reply[0] == nil
+          render :json => {:error => "Reply not found"}.to_json, status: 404
+      else @reply = @reply[0]
+      end
     end
 
     # Only allow a list of trusted parameters through.

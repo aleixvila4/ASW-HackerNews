@@ -63,6 +63,7 @@ class CommentsApiController < ApplicationController
   
   def updateCommentAPI
     @C = Comment.new(comment_params)
+    
     @user = User.where(auth_token: request.headers['ApiKeyAuth'])
     if @C.commentText.empty?
       render :json => {:error => "The text is empty"}.to_json, status: 400
@@ -93,8 +94,13 @@ class CommentsApiController < ApplicationController
  private
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
-      @comment = Comment.find(params[:id])
+      @comment = Comment.where(id: params[:id])
+      if @comment[0] == nil
+          render :json => {:error => "Comment not found"}.to_json, status: 404
+      else @comment = @comment[0]
+      end
     end
+
 
     # Only allow a list of trusted parameters through.
     def comment_params

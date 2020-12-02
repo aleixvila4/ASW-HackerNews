@@ -137,7 +137,11 @@ class ContributionsApiController < ApplicationController
 private
     # Use callbacks to share common setup or constraints between actions.
     def set_contribution
-      @contribution = Contribution.find(params[:id])
+      @contribution = Contribution.where(id: params[:id])
+      if @contribution[0] == nil
+          render :json => {:error => "Contribution not found"}.to_json, status: 404
+      else @contribution = @contribution[0]
+      end
     end
 
     # Only allow a list of trusted parameters through.

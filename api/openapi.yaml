@@ -18,8 +18,8 @@ paths:
     get:
       tags:
       - Contributions
-      summary: Retorna totes les contribucions Url ordenades de més a menys puntuació.
-      description: Retorna totes les contribucions Url ordenades de més a menys puntuació.
+      summary: Retorna totes les contribucions tipus URL ordenades de més a menys puntuació.
+      description: Retorna totes les contribucions tipus URL ordenades de més a menys puntuació.
       responses:
         200:
           description: successful operation
@@ -29,6 +29,22 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Contribution'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorResult'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorResult'
 
   /api/contributions/newest:
     get:
@@ -45,6 +61,22 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Contribution'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorResult'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorResult'
                   
   
   /api/contributions/ask:
@@ -62,6 +94,22 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Contribution'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorResult'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorResult'
                   
   /api/contributions/new:
     post:
@@ -94,12 +142,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AddContributionResult'
-        400:
-          description: 'Error: Bad Request'
+        403:
+          description: 'Forbidden'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResult'
+        401:
+            description: 'Error: Unauthorized'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
   
   /api/contributions/{id}/vote:
     post:
@@ -122,12 +176,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AddContributionVoteResult'
-        400:
-            description: 'Error: Bad Request'
+        404:
+            description: 'Not Found'
             content:
               application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResult'
+        403:
+          description: 'Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
     delete:
         tags:
         - ContributionVote
@@ -192,6 +258,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResult'
+        401:
+            description: 'Error: Unauthorized'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
     
     post:
       tags:
@@ -231,14 +303,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResult'
+        401:
+            description: 'Error: Unauthorized'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
     
     put:
       tags:
       - Contributions
-      summary:
-        Edita la informació d'una contribució a través de la seva id.
-      description:
-        Edita la informació d'una contribució a través de la seva id.
+      summary: Edita la informació d'una contribució a través de la seva id.
+      description: Edita la informació d'una contribució a través de la seva id.
       parameters:
         - name: id
           in: path
@@ -281,6 +357,7 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResult'
+        
                   
     delete:
         tags:
@@ -347,6 +424,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResult'
+        401:
+            description: 'Error: Unauthorized'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
   
   /api/comments/{id}/vote:
     post:
@@ -375,6 +458,19 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResult'
+        401:
+            description: 'Error: Unauthorized'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+                
     delete:
         tags:
         - CommentVote
@@ -439,6 +535,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResult'
+        401:
+            description: 'Error: Unauthorized'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
                 
     post:
       tags:
@@ -478,14 +580,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResult'
+        401:
+            description: 'Error: Unauthorized'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
                 
     put:
       tags:
       - Comments
-      summary:
-        Edita la informació d'un comentari a través de la seva id.
-      description:
-        Edita la informació d'un comentari a través de la seva id.
+      summary: Edita la informació d'un comentari a través de la seva id.
+      description: Edita la informació d'un comentari a través de la seva id.
       parameters:
         - name: id
           in: path
@@ -512,19 +624,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Contribution'
+                $ref: '#/components/schemas/Comment'
         401:
             description: 'Error: Unauthorized'
             content:
               application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResult'
-        403:
-            description: 'Error: Forbidden'
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorResult'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
                   
     delete:
         tags:
@@ -688,6 +800,12 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResult'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
                   
     delete:
       tags:
@@ -753,6 +871,12 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResult'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
     delete:
         tags:
         - ReplyVote
@@ -821,8 +945,8 @@ paths:
     put:
       tags:
       - Users
-      description:
-        Edita la informació d'usuari loguejat
+      summary: Edita la informació de l'usuari loguejat
+      description: Edita la informació de l'usuari loguejat
       parameters:
       - name: id
         in: path
@@ -856,6 +980,12 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResult'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
   
   /api/users/{id}/contributions:
     get:
