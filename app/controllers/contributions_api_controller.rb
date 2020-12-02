@@ -92,7 +92,7 @@ class ContributionsApiController < ApplicationController
 
   def destroyContributionAPI
     @user = User.where(auth_token: request.headers['ApiKeyAuth'])
-    if @user[0].id != @reply.users_id
+    if @user[0].username != @contribution.author
       render :json => {:error => "Unauthorized user"}.to_json, status: 401
     else
       while not Comment.find_by(contributions_id: @contribution.id).nil? do
@@ -113,7 +113,6 @@ private
     # Use callbacks to share common setup or constraints between actions.
     def set_contribution
       @contribution = Contribution.find(params[:id])
-      
     end
 
     # Only allow a list of trusted parameters through.

@@ -54,7 +54,7 @@ class CommentsApiController < ApplicationController
   
   def destroyCommentAPI
     @user = User.where(auth_token: request.headers['ApiKeyAuth'])
-    if @user[0].id != @reply.users_id
+    if @user[0].id != @comment.users_id
      render :json => {:error => "Unauthorized user"}.to_json, status: 401
     else
       while not Reply.find_by(comments_id: @comment.id).nil? do
