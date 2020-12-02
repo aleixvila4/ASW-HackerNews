@@ -11,13 +11,14 @@ security:
 
 servers:
   #- url: 'https://fast-falls-50985.herokuapp.com/'
-  - url: 'http://3.239.44.53:8080'
+  - url: 'http://3.239.26.222:8080'
 
 paths:
   /api/contributions:
     get:
       tags:
       - Contributions
+      summary: Retorna totes les contribucions Url ordenades de més a menys puntuació.
       description: Retorna totes les contribucions Url ordenades de més a menys puntuació.
       responses:
         200:
@@ -28,14 +29,49 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Contribution'
+
+  /api/contributions/newest:
+    get:
+      tags:
+      - Contributions
+      summary: Retorna totes les contribucions ordenades de més a menys recent.
+      description: Retorna totes les contribucions ordenades de més a menys recent.
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contribution'
+                  
+  
+  /api/contributions/ask:
+    get:
+      tags:
+      - Contributions
+      summary: Retorna totes les contribucions de tipus Ask ordenades de més a menys recent.
+      description: Retorna totes les contribucions de tipus Ask ordenades de més a menys recent.
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contribution'
+                  
   
   /api/contributions/new:
     post:
       tags:
       - Contributions
-      description: Afegeix una nova contribució
+      summary: Afegeix una nova contribució
+      description: Afegeix una nova contribució.
       requestBody:
-        description: Titol, autor, url i text de la contribució
+        description: Titol, url i text de la contribució.
         content:
           application/json:
             schema:
@@ -54,7 +90,7 @@ paths:
         required: true
       responses:
         201:
-          description: Tweet created
+          description: Contribution created
           content:
             application/json:
               schema:
@@ -66,43 +102,75 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResult'
   
-  
-  /api/contributions/newest:
-    get:
+  /api/contributions/{id}/vote:
+    post:
       tags:
-      - Contributions
-      description: Retorna totes les contribucions ordenades de més a menys recent.
+      - ContributionVote
+      summary: Es vota una contribució a través de la seva id.
+      description: Es vota una contribució a través de la seva id.
+      parameters:
+        - name: id
+          in: path
+          description: ID de la contribució.
+          required: true
+          schema:
+            type: integer
+            format: int
       responses:
-        200:
-          description: successful operation
+        201:
+          description: Vot creat
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Contribution'
-                  
+                $ref: '#/components/schemas/AddContributionVoteResult'
+        400:
+            description: 'Error: Bad Request'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+    delete:
+        tags:
+        - ContributionVote
+        summary: Es desvota una contribució a través de la seva id.
+        description: Es desvota una contribució a través de la seva id.
+        parameters:
+        - name: id
+          in: path
+          description: ID de la contribució.
+          required: true
+          schema:
+            type: integer
+            format: int
+        responses:
+          204:
+            description: Vot esborrat
+            content:
+              application/json: {}
+          404:
+            description: 'Error: Not Found'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+          401:
+            description: 'Error: Unauthorized'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+          403:
+            description: 'Error: Forbidden'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
   
-  /api/contributions/ask:
+  /api/contributions/{id}:
     get:
       tags:
       - Contributions
-      description: Retorna totes les contribucions de tipus Ask ordenades de més a menys recent.
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Contribution'
-                  
-  
-  /contributions/{id}:
-    get:
-      tags:
-      - Contributions
+      summary: Retorna la informació d'una contribució a través del seu id.
       description: Retorna la informació d'una contribució a través del seu id.
       parameters:
       - name: id
@@ -126,58 +194,62 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResult'
     
-  /api/contributions/{id}:
-    delete:
-        tags:
-        - Contributions
-        description: Esborra la contribució
-        parameters:
-        - name: id
-          in: path
-          description: ID de la contribució a esborrar
-          required: true
-          schema:
-            type: integer
-            format: int
-        responses:
-          204:
-            description: Contribution esborrat
-            content:
-              application/json: {}
-          404:
-            description: 'Error: Not Found'
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorResult'
-          401:
-            description: 'Error: Unauthorized'
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorResult'
-          403:
-            description: 'Error: Forbidden'
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorResult'
-        
-    put:
+    post:
       tags:
-      - Contributions
-      description:
-        Edita la informació d'una contribució
+      - Comments
+      summary: Afegeix un nou comentari a la contribució.
+      description: Afegeix un nou comentari a la contribució.
       parameters:
         - name: id
           in: path
-          description: ID de la contribució a retornar.
+          description: ID de la contribució.
           required: true
           schema:
             type: integer
             format: int
       requestBody:
-        description: Titol, autor, url i text de la contribució
+        description: Text del comentari.
+        content:
+          application/json:
+            schema:
+              required:
+              - commentText
+              type: object
+              properties:
+                commentText:
+                  type: string
+        required: true
+      responses:
+        201:
+          description: Comment creat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddCommentResult'
+        400:
+          description: 'Error: Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+    
+    put:
+      tags:
+      - Contributions
+      summary:
+        Edita la informació d'una contribució a través de la seva id.
+      description:
+        Edita la informació d'una contribució a través de la seva id.
+      parameters:
+        - name: id
+          in: path
+          description: ID de la contribució a actualitzar.
+          required: true
+          schema:
+            type: integer
+            format: int
+      requestBody:
+        description: Titol i text de la contribució.
         content:
           application/json:
             schema:
@@ -210,15 +282,50 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResult'
-
-
-                
-  
-  
+                  
+    delete:
+        tags:
+        - Contributions
+        summary: Esborra una contribució a través de la seva id.
+        description: Esborra una contribució a través de la seva id.
+        parameters:
+        - name: id
+          in: path
+          description: ID de la contribució a esborrar
+          required: true
+          schema:
+            type: integer
+            format: int
+        responses:
+          204:
+            description: Contribution esborrat
+            content:
+              application/json: {}
+          404:
+            description: 'Error: Not Found'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+          401:
+            description: 'Error: Unauthorized'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+          403:
+            description: 'Error: Forbidden'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+                  
+                  
   /api/contributions/comments/{id}:
     get:
       tags:
       - Contributions
+      summary: Retorna tots els comentaris d'una contribució.
       description: Retorna tots els comentaris d'una contribució.
       parameters:
       - name: id
@@ -241,11 +348,76 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResult'
-    
-  /comments/{id}:
+  
+  /api/comments/{id}/vote:
+    post:
+      tags:
+      - CommentVote
+      summary: Es vota un comentari a través de la seva id.
+      description: Es vota un comentari a través de la seva id.
+      parameters:
+        - name: id
+          in: path
+          description: ID del comentari.
+          required: true
+          schema:
+            type: integer
+            format: int
+      responses:
+        201:
+          description: Vot creat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddCommentVoteResult'
+        400:
+            description: 'Error: Bad Request'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+    delete:
+        tags:
+        - CommentVote
+        summary: Es desvota un comentari a través de la seva id.
+        description: Es desvota un comentari a través de la seva id.
+        parameters:
+        - name: id
+          in: path
+          description: ID del comentari.
+          required: true
+          schema:
+            type: integer
+            format: int
+        responses:
+          204:
+            description: Vot esborrat
+            content:
+              application/json: {}
+          404:
+            description: 'Error: Not Found'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+          401:
+            description: 'Error: Unauthorized'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+          403:
+            description: 'Error: Forbidden'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult' 
+  
+  /api/comments/{id}:
     get:
       tags:
       - Comments
+      summary: Retorna la informació d'un comentari a través del seu id.
       description: Retorna la informació d'un comentari a través del seu id.
       parameters:
       - name: id
@@ -269,10 +441,134 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResult'
                 
+    post:
+      tags:
+      - Replies
+      summary: Afegeix una nova reply al comentari.
+      description: Afegeix una nova reply al comentari.
+      parameters:
+        - name: id
+          in: path
+          description: ID del comentari.
+          required: true
+          schema:
+            type: integer
+            format: int
+      requestBody:
+        description: Text de la reply.
+        content:
+          application/json:
+            schema:
+              required:
+              - replyText
+              type: object
+              properties:
+                replyText:
+                  type: string
+        required: true
+      responses:
+        201:
+          description: Reply creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddReplyResult'
+        400:
+          description: 'Error: Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+                
+    put:
+      tags:
+      - Comments
+      summary:
+        Edita la informació d'un comentari a través de la seva id.
+      description:
+        Edita la informació d'un comentari a través de la seva id.
+      parameters:
+        - name: id
+          in: path
+          description: ID del comentari a actualitzar.
+          required: true
+          schema:
+            type: integer
+            format: int
+      requestBody:
+        description: Text del comentari.
+        content:
+          application/json:
+            schema:
+              required:
+              - commentText
+              type: object
+              properties:
+                commentText:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: successful update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contribution'
+        401:
+            description: 'Error: Unauthorized'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+        403:
+            description: 'Error: Forbidden'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+                  
+    delete:
+        tags:
+        - Comments
+        summary: Esborra el comentari a través de la seva id.
+        description: Esborra el comentari a través de la seva id.
+        parameters:
+        - name: id
+          in: path
+          description: ID del comentari a esborrar
+          required: true
+          schema:
+            type: integer
+            format: int
+        responses:
+          204:
+            description: Comment esborrat
+            content:
+              application/json: {}
+          404:
+            description: 'Error: Not Found'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+          401:
+            description: 'Error: Unauthorized'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+          403:
+            description: 'Error: Forbidden'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+                
   /api/comments/replies/{id}:
     get:
       tags:
       - Comments
+      summary: Retorna totes les replies d'un comentari.
       description: Retorna totes les replies d'un comentari.
       parameters:
       - name: id
@@ -296,10 +592,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResult'
     
-  /replies/{id}:
+  /api/replies/{id}:
     get:
       tags:
       - Replies
+      summary: Retorna la informació d'una reply a través del seu id.
       description: Retorna la informació d'una reply a través del seu id.
       parameters:
       - name: id
@@ -315,13 +612,161 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Comment'
+                $ref: '#/components/schemas/Reply'
         404:
           description: 'Error: Not Found'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResult'
+  
+    put:
+      tags:
+      - Replies
+      summary:
+        Edita la informació d'una reply a través de la seva id.
+      description:
+        Edita la informació d'una reply a través de la seva id.
+      parameters:
+        - name: id
+          in: path
+          description: ID de la reply a actualitzar.
+          required: true
+          schema:
+            type: integer
+            format: int
+      requestBody:
+        description: Text de la reply.
+        content:
+          application/json:
+            schema:
+              required:
+              - replyText
+              type: object
+              properties:
+                replyText:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: successful update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contribution'
+        401:
+            description: 'Error: Unauthorized'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+        403:
+            description: 'Error: Forbidden'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+                  
+    delete:
+      tags:
+      - Replies
+      summary: Esborra la reply a través de la seva id.
+      description: Esborra la reply a través de la seva id.
+      parameters:
+      - name: id
+        in: path
+        description: ID de la reply a esborrar
+        required: true
+        schema:
+          type: integer
+          format: int
+      responses:
+        204:
+          description: Reply esborrada
+          content:
+            application/json: {}
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+        401:
+          description: 'Error: Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+        403:
+          description: 'Error: Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+  
+  /api/replies/{id}/vote:
+    post:
+      tags:
+      - ReplyVote
+      summary: Es vota una reply a través de la seva id.
+      description: Es vota una reply a través de la seva id.
+      parameters:
+        - name: id
+          in: path
+          description: ID del comentari.
+          required: true
+          schema:
+            type: integer
+            format: int
+      responses:
+        201:
+          description: Vot creat
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddReplyVoteResult'
+        400:
+            description: 'Error: Bad Request'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+    delete:
+        tags:
+        - ReplyVote
+        summary: Es desvota una reply a través de la seva id.
+        description: Es desvota una reply a través de la seva id.
+        parameters:
+        - name: id
+          in: path
+          description: ID de la reply.
+          required: true
+          schema:
+            type: integer
+            format: int
+        responses:
+          204:
+            description: Vot esborrat
+            content:
+              application/json: {}
+          404:
+            description: 'Error: Not Found'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+          401:
+            description: 'Error: Unauthorized'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+          403:
+            description: 'Error: Forbidden'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
    
 components:
 
@@ -358,6 +803,24 @@ components:
         new_contribution:
           $ref: '#/components/schemas/Contribution'
           
+    Contribution_vote:
+      type: object
+      properties:
+        idContribution:
+          $ref: '#/components/schemas/Contribution'
+        idUsuari:
+          $ref: '#/components/schemas/User'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    
+    AddContributionVoteResult:
+      type: object
+      properties:
+        new_comment_vote:
+          $ref: '#/components/schemas/Contribution_vote'
+          
     Comment:
       type: object
       properties:
@@ -375,6 +838,30 @@ components:
           type: string
         points:
           type: integer
+          
+    AddCommentResult:
+      type: object
+      properties:
+        new_comment:
+          $ref: '#/components/schemas/Comment'
+    
+    Comment_vote:
+      type: object
+      properties:
+        idComment:
+          $ref: '#/components/schemas/Comment'
+        idUsuari:
+          $ref: '#/components/schemas/User'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    
+    AddCommentVoteResult:
+      type: object
+      properties:
+        new_comment_vote:
+          $ref: '#/components/schemas/Comment_vote'
     
     Reply:
       type: object
@@ -393,6 +880,30 @@ components:
           type: string
         points:
           type: integer
+          
+    AddReplyResult:
+      type: object
+      properties:
+        new_comment:
+          $ref: '#/components/schemas/Reply'
+    
+    Reply_vote:
+      type: object
+      properties:
+        idComment:
+          $ref: '#/components/schemas/Reply'
+        idUsuari:
+          $ref: '#/components/schemas/User'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    
+    AddReplyVoteResult:
+      type: object
+      properties:
+        new_comment_vote:
+          $ref: '#/components/schemas/Reply_vote'
           
     User:
       type: object
