@@ -10,8 +10,8 @@ security:
   - ApiKeyAuth: []   
 
 servers:
-  - url: 'https://fast-falls-50985.herokuapp.com/'
-  #- url: 'http://35.170.33.242:8080'
+  #- url: 'https://fast-falls-50985.herokuapp.com/'
+  - url: 'http://3.238.191.129:8080'
 
 paths:
   /api/contributions:
@@ -63,7 +63,6 @@ paths:
                 items:
                   $ref: '#/components/schemas/Contribution'
                   
-  
   /api/contributions/new:
     post:
       tags:
@@ -563,6 +562,29 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResult'
+                  
+  /api/threads:
+    get:
+      tags:
+      - Comments
+      summary: Retorna tots els comentaris de l'usuari loguejat de més a menys recent.
+      description: Retorna tots els comentaris de l'usuari loguejat de més a menys recent.
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+                
                 
   /api/comments/replies/{id}:
     get:
@@ -584,7 +606,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Contribution'
+                $ref: '#/components/schemas/Comment'
         404:
           description: 'Error: Not Found'
           content:
