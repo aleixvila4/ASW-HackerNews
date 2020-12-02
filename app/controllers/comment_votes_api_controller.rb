@@ -35,8 +35,8 @@ def createCommentVoteAPI
     if @comment[0].nil?
       render :json => {:error => "The comment does not exists"}.to_json, status: 404
     else
-      @comment.points +=1
-      @comment.save
+      @comment[0].points +=1
+      @comment[0].save
       if @comment_vote.save
       render @comment_vote  
       end
@@ -52,7 +52,7 @@ def destroyCommentVoteAPI
   else
     @comment = Comment.find(@comment_vote[0].idComment)
     if @comment.users_id == @user[0].id
-      render :json => {:error => "You cannot delete the vote because you are the author of the contribution"}.to_json, status: 403
+      render :json => {:error => "You cannot delete the vote because you are the author of the comment"}.to_json, status: 403
     else
       @comment_vote[0].destroy
       @comment.points -= 1

@@ -34,8 +34,8 @@ def createContributionVoteAPI
       if @contribution[0].nil?
         render :json => {:error => "The contribution does not exists"}.to_json, status: 404
       else
-        @contribution.points +=1
-        @contribution.save
+        @contribution[0].points +=1
+        @contribution[0].save
         if @contribution_vote.save
          render @contribution_vote
         end

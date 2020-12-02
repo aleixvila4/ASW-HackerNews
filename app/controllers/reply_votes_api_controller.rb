@@ -14,8 +14,8 @@ def createReplyVoteAPI
     if @reply[0].nil?
       render :json => {:error => "The reply does not exists"}.to_json, status: 404
     else
-      @reply.points +=1
-      @reply.save
+      @reply[0].points +=1
+      @reply[0].save
       if @reply_vote.save
        render @reply_vote
       end
