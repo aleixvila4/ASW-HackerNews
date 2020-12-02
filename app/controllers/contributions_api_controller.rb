@@ -37,13 +37,11 @@ class ContributionsApiController < ApplicationController
   end
   
   def index_comments_contributionsAPI
-    if @flag == 0
-      @comments = Comment.where(contributions_id: params[:id]).order("created_at DESC")
-      if @comments[0] == nil
-        render :json => {"Error": "Comments not found"}.to_json, status: 404
-      else
-        render json: @comments
-      end
+    @comments = Comment.where(contributions_id: params[:id]).order("created_at DESC")
+    if @comments[0] == nil
+      render :json => {"Error": "Comments not found"}.to_json, status: 404
+    else
+      render json: @comments
     end
   end
   
