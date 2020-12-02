@@ -5,21 +5,24 @@ class UsersApiController < ApplicationController
         @usuari = User.where(id: params[:id])
         if @usuari[0] == nil
           render :json => {"Error": "User not found"}.to_json, status: 404
-        else
-         render_user(@usuari[0], 200)
+        end
+        if @usuari[0].id == @user[0].id
+          render json: @usuari[0]
+        else 
+          render_user(@usuari[0], 200)
         end
     end
   
     def updateUserAPI
       @usuari = User.where(id: params[:id])
       @user = User.where(auth_token: request.headers['ApiKeyAuth'])
-      if @usuari[0].id != @user[0].id
-        render :json => {"Error": "Unauthorized user"}.to_json, status: 401
-      elsif @usuari[0] == nil
+      if @usuari[0] == nil
         render :json => {"Error": "User not found"}.to_json, status: 404
+      elsif @usuari[0].id != @user[0].id
+        render :json => {"Error": "Unauthorized user"}.to_json, status: 401
       else
         @usuari[0].update(user_params_api)
-        render_user(@usuari[0], 200)
+        render json: @usuari[0]
       end
     end
     

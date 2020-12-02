@@ -4,7 +4,21 @@ class CommentsApiController < ApplicationController
   
   def index_user_commentsAPI
     @user = User.find(params[:id])
-    @comments = Comment.where(users_id: @user.id).order("created_at DESC")
+    if @user.nil?
+      render :json => {"Error": "User not found"}.to_json, status: 404
+    else 
+      @comments = Comment.where(users_id: @user.id).order("created_at DESC")
+      if @comments[0] == nil
+        render :json => {"Error": "Comments not found"}.to_json, status: 404
+      else
+        render json: @comments
+      end
+    end
+  end
+  
+  def indexThreadsAPI
+    @user = User.where(auth_token: request.headers['ApiKeyAuth'])
+    @comments = Comment.where(users_id: @user[0].id).order("created_at DESC")
     if @comments[0] == nil
       render :json => {"Error": "Comments not found"}.to_json, status: 404
     else

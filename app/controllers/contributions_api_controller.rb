@@ -35,11 +35,15 @@ class ContributionsApiController < ApplicationController
   
   def index_user_contributionsAPI
     @user = User.find(params[:id])
-    @contributions = Contribution.where(author: @user.username).order("created_at DESC")
-    if @contributions[0] == nil
-      render :json => {"Error": "Contributions not found"}.to_json, status: 404
-    else
-      render json: @contributions
+    if @user.nil?
+      render :json => {"Error": "User not found"}.to_json, status: 404
+    else 
+      @contributions = Contribution.where(author: @user.username).order("created_at DESC")
+      if @contributions[0] == nil
+        render :json => {"Error": "Contributions not found"}.to_json, status: 404
+      else
+        render json: @contributions
+      end
     end
   end
   
@@ -62,33 +66,30 @@ class ContributionsApiController < ApplicationController
   end
   
   def createContributionAPI
-    b = true
     require 'uri'
+    b = true
     @contribution = Contribution.new(contribution_params)
-    puts "----------------------------"
-    logger.debug @contribution.title
-    logger.debug @contribution.url
-    logger.debug @contribution.text
     @user = User.where(auth_token: request.headers['ApiKeyAuth'])
     @contribution.author = @user[0].username
     if @contribution.title.empty?
       b = false
-      render :json => {:error => "The title is empty"}.to_json, status: 400
+      render :json => {:error => "The title is empty"}.to_json, status: 403
+    elsif not @contribution.url.empty? and not @contribution.text.empty?
+      b = false
+      render :json => {:error => "URL and TEXT are both filled."}.to_json, status: 403
     elsif @contribution.url.empty? and @contribution.text.empty?
       b = false
-      render :json => {:error => "The fields are empty"}.to_json, status: 400
+      render :json => {:error => "The fields are empty"}.to_json, status: 403
     elsif not @contribution.url.empty?
         if Contribution.exists?(url: @contribution.url)
+          b = false
           render :json => {:error => "The URL already exists"}.to_json, status: 403
-        elsif @contribution.url =~ URI::regexp
-            if !defined?(@points) 
-                @points = 0 
-            end
-        else
-          render :json => {:error => "The URL is not valid"}.to_json, status: 400
+        elsif not @contribution.url =~ URI::regexp
+          b = false
+            render :json => {:error => "The URL is not valid"}.to_json, status: 403
         end
     end
-    if b == true
+    if b
       @contribution.save
       @vote = Vote.new(:idUsuari => @user[0].id, :idContrib => @contribution.id)
       @vote.save
@@ -97,14 +98,16 @@ class ContributionsApiController < ApplicationController
       render json: @contribution
     end
   end
-  
+
   def updateContributionAPI
     @C = Contribution.new(contribution_params)
     @user = User.where(auth_token: request.headers['ApiKeyAuth'])
     if @C.title.empty?
-      render :json => {:error => "The title is empty"}.to_json, status: 400
+      render :json => {:error => "The title is empty"}.to_json, status: 403
+    elsif not @contribution.url.empty? and not @C.text.empty?
+      render :json => {:error => "URL and TEXT are both filled."}.to_json, status: 403
     elsif @contribution.url.empty? and @C.text.empty?
-      render :json => {:error => "The text is empty"}.to_json, status: 400
+      render :json => {:error => "The text is empty"}.to_json, status: 403
     elsif @contribution.author != @user[0].username
       render :json => {:error => "Unauthorized user"}.to_json, status: 401
     elsif @contribution.update(contribution_params)

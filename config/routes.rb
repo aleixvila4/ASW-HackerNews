@@ -49,6 +49,7 @@
   delete 'api/contributions/:id/vote', to: 'votes_api#destroyContributionVoteAPI'
   
   get 'api/comments/:id', to: 'comments_api#show_commentAPI'
+  get 'api/threads', to: 'comments_api#indexThreadsAPI'
   post 'api/comments/:id', to: 'replies_api#createReplyAPI'
   put 'api/comments/:id', to: 'comments_api#updateCommentAPI'
   delete 'api/comments/:id', to: 'comments_api#destroyCommentAPI'
