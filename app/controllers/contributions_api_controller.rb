@@ -62,13 +62,20 @@ class ContributionsApiController < ApplicationController
   end
   
   def createContributionAPI
+    b = true
     require 'uri'
     @contribution = Contribution.new(contribution_params)
+    puts "----------------------------"
+    logger.debug @contribution.title
+    logger.debug @contribution.url
+    logger.debug @contribution.text
     @user = User.where(auth_token: request.headers['ApiKeyAuth'])
     @contribution.author = @user[0].username
     if @contribution.title.empty?
+      b = false
       render :json => {:error => "The title is empty"}.to_json, status: 400
     elsif @contribution.url.empty? and @contribution.text.empty?
+      b = false
       render :json => {:error => "The fields are empty"}.to_json, status: 400
     elsif not @contribution.url.empty?
         if Contribution.exists?(url: @contribution.url)
@@ -80,7 +87,8 @@ class ContributionsApiController < ApplicationController
         else
           render :json => {:error => "The URL is not valid"}.to_json, status: 400
         end
-    else
+    end
+    if b == true
       @contribution.save
       @vote = Vote.new(:idUsuari => @user[0].id, :idContrib => @contribution.id)
       @vote.save
