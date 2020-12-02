@@ -62,5 +62,12 @@
   post 'api/replies/:id/vote', to: 'reply_votes_api#createReplyVoteAPI'
   delete 'api/replies/:id/vote', to: 'reply_votes_api#destroyReplyVoteAPI'
   
+  get 'api/users/:id', to: 'users_api#showUserAPI'
+  put 'api/users/:id', to: 'users_api#updateUserAPI'
+  get 'api/users/:id/contributions', to: 'contributions_api#index_user_contributionsAPI'
+  get 'api/users/:id/comments', to: 'comments_api#index_user_commentsAPI'
+  get 'api/users/:id/upvotedcontributions', to: 'votes_api#index_user_votedcontributionsAPI'
+  get 'api/users/:id/upvotedcomments', to: 'comment_votes_api#index_user_votedcommentsAPI'
+  
   root 'contributions#index'
 end

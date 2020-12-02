@@ -5,26 +5,26 @@ class ContributionsApiController < ApplicationController
   # GET /contributions
   # GET /api/contributions.json
   def indexAPI
-    if @flag == 0
-      @contributions = Contribution.where.not(url: "").order(points: :desc)
-      render json: @contributions
-    end
+    @contributions = Contribution.where.not(url: "").order(points: :desc)
+    render json: @contributions
   end
   
   
   def indexNewAPI
-    if @flag == 0
-     @contributions = Contribution.all.order("created_at DESC")
-     render json: @contributions
-    end
+    @contributions = Contribution.all.order("created_at DESC")
+    render json: @contributions
   end
   
   
   def indexAskAPI
-    if @flag == 0
-      @contributions = Contribution.where(url: "").order("created_at DESC")
-      render json: @contributions
-    end
+    @contributions = Contribution.where(url: "").order("created_at DESC")
+    render json: @contributions
+  end
+  
+  def index_user_contributionsAPI
+    @user = User.find(params[:id])
+    @contributions = Contribution.where(author: @user.username).order("created_at DESC")
+    render json: @contributions
   end
   
   def show_contributionAPI

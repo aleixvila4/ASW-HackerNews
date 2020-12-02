@@ -2,6 +2,11 @@ class CommentsApiController < ApplicationController
   before_action :set_comment, only: [:updateCommentAPI, :destroyCommentAPI]
   before_action :authenticate
   
+  def index_user_commentsAPI
+    @user = User.find(params[:id])
+    @comments = Comment.where(users_id: @user.id).order("created_at DESC")
+    render json: @comments
+  end
   
   def show_commentAPI
     @comment = Comment.where(id: params[:id])
@@ -13,13 +18,11 @@ class CommentsApiController < ApplicationController
   end
   
   def index_replies_comments
-    if @flag == 0
-      @replies = Reply.where(comments_id: params[:id]).order("created_at DESC")
-      if @replies[0] == nil
-        render :json => {"Error": "Replies not found"}.to_json, status: 404
-      else
-        render json: @replies
-      end
+    @replies = Reply.where(comments_id: params[:id]).order("created_at DESC")
+    if @replies[0] == nil
+      render :json => {"Error": "Replies not found"}.to_json, status: 404
+    else
+      render json: @replies
     end
   end
   
