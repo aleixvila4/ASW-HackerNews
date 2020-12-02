@@ -6,10 +6,11 @@
   resources :users
   resources :votes
   resources :contributions do
-   member do
+  member do
       put 'points'
     end
- end
+  end
+  
   get 'contributions_NewIndex', to: 'contributions#indexNew'
   get 'contributions_AskIndex', to: 'contributions#indexAsk'
   
@@ -35,15 +36,31 @@
   get 'logout', to: 'sessions#logout'
   get 'form_edit', to: 'contributions#edit'
   
-  get 'api/contributions', to: 'contribution_api#indexAPI'
-  get 'api/contributions/newest', to: 'contribution_api#indexNewAPI'
-  get 'api/contributions/ask', to: 'contribution_api#indexAskAPI'
-  get 'api/contributions/comments/:id', to: 'contribution_api#index_comments_contributions'
-  post 'api/contributions/new', to: 'contribution_api#createContributionAPI'
-  put 'api/contributions/:id', to: 'contribution_api#updateAPI'
-  delete 'api/contributions/:id', to: 'contribution_api#destroyAPI'
+  get 'api/contributions', to: 'contributions_api#indexAPI'
+  get 'api/contributions/newest', to: 'contributions_api#indexNewAPI'
+  get 'api/contributions/ask', to: 'contributions_api#indexAskAPI'
+  get 'api/contributions/comments/:id', to: 'contributions_api#index_comments_contributionsAPI'
+  post 'api/contributions/new', to: 'contributions_api#createContributionAPI'
+  get 'api/contributions/:id', to: 'contributions_api#show_contributionAPI'
+  post 'api/contributions/:id', to: 'comments_api#createCommentAPI'
+  put 'api/contributions/:id', to: 'contributions_api#updateContributionAPI'
+  delete 'api/contributions/:id', to: 'contributions_api#destroyContributionAPI'
+  post 'api/contributions/:id/vote', to: 'votes_api#createContributionVoteAPI'
+  delete 'api/contributions/:id/vote', to: 'votes_api#destroyContributionVoteAPI'
   
+  get 'api/comments/:id', to: 'comments_api#show_commentAPI'
+  post 'api/comments/:id', to: 'replies_api#createReplyAPI'
+  put 'api/comments/:id', to: 'comments_api#updateCommentAPI'
+  delete 'api/comments/:id', to: 'comments_api#destroyCommentAPI'
   get 'api/comments/replies/:id', to: 'comments_api#index_replies_comments'
+  post 'api/comments/:id/vote', to: 'comment_votes_api#createCommentVoteAPI'
+  delete 'api/comments/:id/vote', to: 'comment_votes_api#destroyCommentVoteAPI'
+  
+  get 'api/replies/:id', to: 'replies_api#show_replyAPI'
+  put 'api/replies/:id', to: 'replies_api#updateReplyAPI'
+  delete 'api/replies/:id', to: 'replies_api#destroyReplyAPI'
+  post 'api/replies/:id/vote', to: 'reply_votes_api#createReplyVoteAPI'
+  delete 'api/replies/:id/vote', to: 'reply_votes_api#destroyReplyVoteAPI'
   
   root 'contributions#index'
 end

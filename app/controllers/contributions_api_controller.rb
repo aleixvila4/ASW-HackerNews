@@ -1,5 +1,5 @@
-class ContributionApiController < ApplicationController
-  before_action :set_contribution, only: [:show, :edit, :updateAPI, :destroyAPI, :points]
+class ContributionsApiController < ApplicationController
+  before_action :set_contribution, only: [:updateContributionAPI, :destroyContributionAPI]
   before_action :authenticate
   
   # GET /contributions
@@ -27,11 +27,20 @@ class ContributionApiController < ApplicationController
     end
   end
   
-  def index_comments_contributions
+  def show_contributionAPI
+    @contribution = Contribution.where(id: params[:id])
+    if @contribution[0] == nil
+      render :json => {"Error": "Contribution not found"}.to_json, status: 404
+    else
+      render json: @contribution
+    end
+  end
+  
+  def index_comments_contributionsAPI
     if @flag == 0
       @comments = Comment.where(contributions_id: params[:id]).order("created_at DESC")
       if @comments[0] == nil
-        render :json => {"Error": "Comment not found"}.to_json, status: 404
+        render :json => {"Error": "Comments not found"}.to_json, status: 404
       else
         render json: @comments
       end
@@ -67,7 +76,7 @@ class ContributionApiController < ApplicationController
     end
   end
   
-  def updateAPI
+  def updateContributionAPI
     @C = Contribution.new(contribution_params)
     @user = User.where(auth_token: request.headers['ApiKeyAuth'])
     if @C.title.empty?
@@ -81,18 +90,23 @@ class ContributionApiController < ApplicationController
     end
   end
 
-  def destroyAPI
-    while not Comment.find_by(contributions_id: @contribution.id).nil? do
-      while not Reply.find_by(comments_id: Comment.find_by(contributions_id: @contribution.id).id).nil? do
-      Reply.find_by(comments_id: Comment.find_by(contributions_id: @contribution.id).id).destroy
+  def destroyContributionAPI
+    @user = User.where(auth_token: request.headers['ApiKeyAuth'])
+    if @user[0].id != @reply.users_id
+      render :json => {:error => "Unauthorized user"}.to_json, status: 401
+    else
+      while not Comment.find_by(contributions_id: @contribution.id).nil? do
+        while not Reply.find_by(comments_id: Comment.find_by(contributions_id: @contribution.id).id).nil? do
+        Reply.find_by(comments_id: Comment.find_by(contributions_id: @contribution.id).id).destroy
+        end
+        Comment.find_by(contributions_id: @contribution.id).destroy
       end
-      Comment.find_by(contributions_id: @contribution.id).destroy
+      while not Vote.find_by(idContrib: @contribution.id).nil? do
+        Vote.find_by(idContrib: @contribution.id).destroy
+      end
+      @contribution.destroy
+      render :json => {:message => "removed" }.to_json, status: 204
     end
-    while not Vote.find_by(idContrib: @contribution.id).nil? do
-      Vote.find_by(idContrib: @contribution.id).destroy
-    end
-    @contribution.destroy
-    render :json => {:message => "removed" }.to_json, status: 204
   end
   
 private
@@ -104,6 +118,6 @@ private
 
     # Only allow a list of trusted parameters through.
     def contribution_params
-      params.require(:contribution_api).permit(:title, :author, :url, :text)
+      params.require(:contributions_api).permit(:title, :author, :url, :text)
     end
 end

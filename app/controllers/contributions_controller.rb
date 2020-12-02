@@ -101,7 +101,7 @@ class ContributionsController < ApplicationController
       redirect_to @contribution, notice: "The title is empty." 
     elsif @contribution.url.empty? and @C.text.empty?
       redirect_to @contribution, notice: "The text is empty."
-    elsif @contribution.author != @C.author
+    elsif @contribution.author != current_user.username
       redirect_to @contribution, notice: "Unauthorized user."
     else
     respond_to do |format|
