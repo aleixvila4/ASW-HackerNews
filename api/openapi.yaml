@@ -11,7 +11,7 @@ security:
 
 servers:
   - url: 'https://fast-falls-50985.herokuapp.com/'
-  #- url: 'http://3.239.26.222:8080'
+  #- url: 'http://35.170.33.242:8080'
 
 paths:
   /api/contributions:
@@ -713,7 +713,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: ID del comentari.
+          description: ID de la reply.
           required: true
           schema:
             type: integer
@@ -767,7 +767,186 @@ paths:
               application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResult'
-   
+  
+  /api/users/{id}:
+    get:
+      tags:
+      - Users
+      summary: Retorna la informació d'un usuari a través del seu id.
+      description: Retorna la informació d'un usuari a través del seu id.
+      parameters:
+      - name: id
+        in: path
+        description: ID de l'usuari a retornar.
+        required: true
+        schema:
+          type: integer
+          format: int
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+  
+    put:
+      tags:
+      - Users
+      description:
+        Edita la informació d'usuari loguejat
+      parameters:
+      - name: id
+        in: path
+        description: ID de la reply a retornar.
+        required: true
+        schema:
+          type: integer
+          format: int
+      requestBody:
+        description: Titol, autor, url i text de la contribució
+        content:
+          application/json:
+            schema:
+              required:
+              - about
+              type: object
+              properties:
+                about:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: successful update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+            description: 'Error: Unauthorized'
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResult'
+  
+  /api/users/{id}/contributions:
+    get:
+      tags:
+      - Users
+      summary: Retorna les contribucions d'un usuari a través del seu id.
+      description: Retorna les contribucions d'un usuari a través del seu id.
+      parameters:
+      - name: id
+        in: path
+        description: ID de l'usuari.
+        required: true
+        schema:
+          type: integer
+          format: int
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contribution'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+  
+  /api/users/{id}/comments:
+    get:
+      tags:
+      - Users
+      summary: Retorna els comentaris d'un usuari a través del seu id.
+      description: Retorna els comentaris d'un usuari a través del seu id.
+      parameters:
+      - name: id
+        in: path
+        description: ID de l'usuari.
+        required: true
+        schema:
+          type: integer
+          format: int
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+  
+  /api/users/{id}/upvotedcontributions:
+    get:
+      tags:
+      - Users
+      summary: Retorna les contribucions votades per un usuari a través del seu id.
+      description: Retorna les contribucions votades per un usuari a través del seu id.
+      parameters:
+      - name: id
+        in: path
+        description: ID de l'usuari.
+        required: true
+        schema:
+          type: integer
+          format: int
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contribution'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+  
+  /api/users/{id}/upvotedcomments:
+    get:
+      tags:
+      - Users
+      summary: Retorna els comentaris votats per un usuari a través del seu id.
+      description: Retorna els comentaris votats per un usuari a través del seu id.
+      parameters:
+      - name: id
+        in: path
+        description: ID de l'usuari.
+        required: true
+        schema:
+          type: integer
+          format: int
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+
 components:
 
   securitySchemes:
