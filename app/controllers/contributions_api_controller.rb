@@ -24,6 +24,7 @@ class ContributionsApiController < ApplicationController
   end
   
   
+  
   def indexAskAPI
     @contributions = Contribution.where(url: "").order("created_at DESC")
     if @contributions[0] == nil
