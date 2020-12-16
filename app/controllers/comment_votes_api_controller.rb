@@ -38,7 +38,7 @@ def createCommentVoteAPI
       @comment[0].points +=1
       @comment[0].save
       if @comment_vote.save
-      render @comment_vote  
+      render json: @comment_vote  
       end
     end
   end

@@ -17,7 +17,7 @@ def createReplyVoteAPI
       @reply[0].points +=1
       @reply[0].save
       if @reply_vote.save
-       render @reply_vote
+       render json: @reply_vote
       end
     end
   end
