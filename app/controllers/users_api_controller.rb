@@ -2,7 +2,8 @@ class UsersApiController < ApplicationController
     before_action :authenticate
     
     def showUserAPI
-        @usuari = User.where(id: params[:id])
+        @usuari = User.where(username: params[:username])
+        @user = User.where(auth_token: request.headers['ApiKeyAuth'])
         if @usuari[0] == nil
           render :json => {"Error": "User not found"}.to_json, status: 404
         end
