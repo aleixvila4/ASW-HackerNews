@@ -37,7 +37,7 @@ def createContributionVoteAPI
         @contribution[0].points +=1
         @contribution[0].save
         if @contribution_vote.save
-         render @contribution_vote
+         render json: @contribution_vote
         end
       end
     end
