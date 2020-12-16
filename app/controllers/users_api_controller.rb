@@ -1,5 +1,5 @@
 class UsersApiController < ApplicationController
-    #before_action :authenticate
+    before_action :authenticate
     
     def showUserIDAPI
         @usuari = User.where(id: params[:id])
