@@ -11,7 +11,7 @@ security:
 
 servers:
   #- url: 'https://fast-falls-50985.herokuapp.com/'
-  - url: 'http://3.238.191.129:8080'
+  - url: 'http://34.200.254.119:8080'
 
 paths:
   /api/contributions:
@@ -397,7 +397,7 @@ paths:
                   $ref: '#/components/schemas/ErrorResult'
                   
                   
-  /api/contributions/comments/{id}:
+  /api/contributions/{id}/comments:
     get:
       tags:
       - Contributions
@@ -698,7 +698,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResult'
                 
                 
-  /api/comments/replies/{id}:
+  /api/comments/{id}/replies:
     get:
       tags:
       - Comments
@@ -914,6 +914,34 @@ paths:
                 schema:
                   $ref: '#/components/schemas/ErrorResult'
   
+  /api/users/info/{username}:
+    get:
+      tags:
+      - Users
+      summary: Retorna la informació d'un usuari a través del seu id.
+      description: Retorna la informació d'un usuari a través del seu id.
+      parameters:
+      - name: username
+        in: path
+        description: username de l'usuari a retornar.
+        required: true
+        schema:
+          type: string
+          format: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: 'Error: Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+  
   /api/users/{id}:
     get:
       tags:
@@ -923,7 +951,7 @@ paths:
       parameters:
       - name: id
         in: path
-        description: ID de l'usuari a retornar.
+        description: id de l'usuari a retornar.
         required: true
         schema:
           type: integer
